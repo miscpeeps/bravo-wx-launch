@@ -1,7 +1,7 @@
 Folder for raw data from KSC Weather sources
 
 # Folder Structure
-Please create subfolders in the following construct: YYYYMMDD-scrub or YYYMMDD-launch
+Please create subfolders in the following construct: YYYYMMDD-scrub or YYYYMMDD-launch
 
 # Data sources
 We are pulling 4 hours of data previous to the time of each event (launch or scrub).
