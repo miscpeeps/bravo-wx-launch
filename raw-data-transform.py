@@ -103,34 +103,38 @@ def test_transform(raw_data_files: dict, results_directory: str) -> None:
                 if "amps" in file_name:
                     logging.debug("Applying transform to amps-low file")
                     amps_df = pd.read_csv(file_name)
-                    df_dict["amps-df"] = amps_df
                     total_data_points += amps_df.shape[0] * amps_df.shape[1]
                     # call amps low transform
                 elif "field-mill" in file_name:
                     logging.debug("Applying transform to field mill (lplws) file")
                     fm_df = pd.read_csv(file_name)
-                    df_dict["fm-df"] = fm_df
                     total_data_points += fm_df.shape[0] * fm_df.shape[1]
-                    # call lplws transform
+                    # call lplws field mill transform
                 elif "merlin" in file_name:
-                    # call merlin c-g transform
                     logging.debug("Applying transform to merlin c-g file")
                     merlin_df = pd.read_csv(file_name)
+                    total_data_points += merlin_df.shape[0] * merlin_df.shape[1]
+                    # call merlin c-g transform
                 elif "rainfall" in file_name:
-                    # call rainfall transform
                     logging.debug("Applying transform to rainfall file")
                     rain_df = pd.read_csv(file_name)
+                    total_data_points += rain_df.shape[0] * rain_df.shape[1]
+                    # call rainfall transform
                 elif "tower" in file_name:
-                    # call weather tower transform
                     logging.debug("Applying transform to weather tower file")
                     wt_df = pd.read_csv(file_name)
+                    total_data_points += wt_df.shape[0] * wt_df.shape[1]
+                    # call weather tower transform
                 elif "50mhz" in file_name:
-                    # call 50Mhz wind transform
                     logging.debug("Applying transform to 50MHz wind file")
-                    amps_df = pd.read_csv(file_name)
+                    mhz50_df = pd.read_csv(file_name)
+                    total_data_points += mhz50_df.shape[0] * mhz50_df.shape[1]
+                    # call 50Mhz wind transform
                 elif "915mhz" in file_name:
-                    # call 915Mhz wind transform
                     logging.debug("Applying transform to 915MHz wind file")
+                    mhz915_df = pd.read_csv(file_name)
+                    total_data_points += mhz915_df.shape[0] * mhz915_df.shape[1]
+                    # call 915Mhz wind transform
                 else:
                     logging.warning("%s is not a valid csv file. Ignoring", file_name)
             else:
