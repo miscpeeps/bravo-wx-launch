@@ -1,0 +1,202 @@
+DEBUG:root:Created data results directory ./data-transform-20220720155517449229
+DEBUG:root:Found the following raw-data directories:
+DEBUG:root:['20220401-launch', '20220421-launch', '20220429-launch', '20220519-launch', '20220525-launch', '20220608-launch', '20220612-launch', '20220619-launch', '20220629-launch', '20220701-launch', '20220707-launch', '20220717-launch']
+DEBUG:root:Scanning folder ./raw-data/20220401-launch/
+WARNING:root:Found 5 files:
+DEBUG:root:['amps-low-export-20224119084101.csv', 'merlin-cloud-to-ground-export-20224119084100.csv', 'weather-tower-export-20224019084044.csv', 'wind-profiler-50mhz-export-20224219084219.csv', 'wind-profiler-915mhz-export-20223919083944.csv']
+DEBUG:root:Scanning folder ./raw-data/20220421-launch/
+WARNING:root:Found 5 files:
+DEBUG:root:['no_ampslow_data_for_time_period.md', 'no_merlincg_data_for_time_period.md', 'weather-tower-export-20220419080423.csv', 'wind-profiler-50mhz-export-20220319080339.csv', 'wind-profiler-915mhz-export-20220119080152.csv']
+DEBUG:root:Scanning folder ./raw-data/20220429-launch/
+DEBUG:root:Found 7 files:
+DEBUG:root:['amps-low-export-20224619074603.csv', 'field-mill-export-20223320123306.csv', 'merlin-cloud-to-ground-export-20224619074617.csv', 'no_rain_data_for_time_period.md', 'weather-tower-export-20224919074906.csv', 'wind-profiler-50mhz-export-20224619074601.csv', 'wind-profiler-915mhz-export-20224419074438.csv']
+DEBUG:root:Scanning folder ./raw-data/20220519-launch/
+DEBUG:root:Found 7 files:
+DEBUG:root:['amps-low-export-20223119073112.csv', 'field-mill-export-20222820122855.csv', 'no_merlincg_data_for_time_period.md', 'no_rain_data_for_time_period.md', 'weather-tower-export-20223119073153.csv', 'wind-profiler-50mhz-export-20223119073111.csv', 'wind-profiler-915mhz-export-20222919072959.csv']
+DEBUG:root:Scanning folder ./raw-data/20220525-launch/
+DEBUG:root:Found 7 files:
+DEBUG:root:['amps-low-export-20223419043428.csv', 'field-mill-export-20222220122248.csv', 'no_merlincg_data_for_time_period.md', 'no_rain_data_for_time_period.md', 'weather-tower-export-20223519043513.csv', 'wind-profiler-50mhz-export-20223619043616.csv', 'wind-profiler-915mhz-export-20223419043427.csv']
+DEBUG:root:Scanning folder ./raw-data/20220608-launch/
+DEBUG:root:Found 7 files:
+DEBUG:root:['amps-low-export-20222619042614.csv', 'field-mill-export-20221720121705.csv', 'merlin-cloud-to-ground-export-20222619042613.csv', 'rainfall-export-20221620121622.csv', 'weather-tower-export-20222519042559.csv', 'wind-profiler-50mhz-export-20222519042516.csv', 'wind-profiler-915mhz-export-20222319042358.csv']
+DEBUG:root:Scanning folder ./raw-data/20220612-launch/
+DEBUG:root:Found 7 files:
+DEBUG:root:['amps-low-export-20221619041648.csv', 'field-mill-export-20221520121505.csv', 'merlin-cloud-to-ground-export-20221619041647.csv', 'rainfall-export-20221420121425.csv', 'weather-tower-export-20221719041734.csv', 'wind-profiler-50mhz-export-20221619041634.csv', 'wind-profiler-915mhz-export-20221519041522.csv']
+DEBUG:root:Scanning folder ./raw-data/20220619-launch/
+DEBUG:root:Found 7 files:
+DEBUG:root:['amps-low-export-20220719040701.csv', 'field-mill-export-20221220121211.csv', 'merlin-cloud-to-ground-export-20220719040712.csv', 'rainfall-export-20221120121100.csv', 'weather-tower-export-20220719040758.csv', 'wind-profiler-50mhz-export-20220719040700.csv', 'wind-profiler-915mhz-export-20220619040611.csv']
+DEBUG:root:Scanning folder ./raw-data/20220629-launch/
+DEBUG:root:Found 7 files:
+DEBUG:root:['amps-low-export-20225719035727.csv', 'merlin-cloud-to-ground-export-20225719035743.csv', 'no_lplws_data_for_time_period.md', 'no_rain_data_for_time_period.md', 'weather-tower-export-20225819035832.csv', 'wind-profiler-50mhz-export-20225719035726.csv', 'wind-profiler-915mhz-export-20225619035615.csv']
+DEBUG:root:Scanning folder ./raw-data/20220701-launch/
+DEBUG:root:Found 7 files:
+DEBUG:root:['amps-low-export-20223919033959.csv', 'merlin-cloud-to-ground-export-20224219034239.csv', 'no_lplws_data_for_time_period.md', 'no_rain_data_for_time_period.md', 'weather-tower-export-20224419034450.csv', 'wind-profiler-50mhz-export-20223919033952.csv', 'wind-profiler-915mhz-export-20223719033733.csv']
+DEBUG:root:Scanning folder ./raw-data/20220707-launch/
+DEBUG:root:Found 7 files:
+DEBUG:root:['amps-low-export-20222819032822.csv', 'merlin-cloud-to-ground-export-20222919032938.csv', 'no_lplws_data_for_time_period.md', 'no_rain_data_for_time_period.md', 'weather-tower-export-20223119033136.csv', 'wind-profiler-50mhz-export-20222719032743.csv', 'wind-profiler-915mhz-export-20222319032318.csv']
+DEBUG:root:Scanning folder ./raw-data/20220717-launch/
+DEBUG:root:Found 7 files:
+DEBUG:root:['amps-low-export-20221119031120.csv', 'merlin-cloud-to-ground-export-20221219031232.csv', 'no_lplws_data_for_time_period.md', 'no_rain_data_for_time_period.md', 'weather-tower-export-20221519031510.csv', 'wind-profiler-50mhz-export-20221019031018.csv', 'wind-profiler-915mhz-export-20220519030505.csv']
+DEBUG:root:Returned raw data file dictionary
+DEBUG:root:{'./raw-data/20220401-launch/': ['amps-low-export-20224119084101.csv', 'merlin-cloud-to-ground-export-20224119084100.csv', 'weather-tower-export-20224019084044.csv', 'wind-profiler-50mhz-export-20224219084219.csv', 'wind-profiler-915mhz-export-20223919083944.csv'], './raw-data/20220421-launch/': ['no_ampslow_data_for_time_period.md', 'no_merlincg_data_for_time_period.md', 'weather-tower-export-20220419080423.csv', 'wind-profiler-50mhz-export-20220319080339.csv', 'wind-profiler-915mhz-export-20220119080152.csv'], './raw-data/20220429-launch/': ['amps-low-export-20224619074603.csv', 'field-mill-export-20223320123306.csv', 'merlin-cloud-to-ground-export-20224619074617.csv', 'no_rain_data_for_time_period.md', 'weather-tower-export-20224919074906.csv', 'wind-profiler-50mhz-export-20224619074601.csv', 'wind-profiler-915mhz-export-20224419074438.csv'], './raw-data/20220519-launch/': ['amps-low-export-20223119073112.csv', 'field-mill-export-20222820122855.csv', 'no_merlincg_data_for_time_period.md', 'no_rain_data_for_time_period.md', 'weather-tower-export-20223119073153.csv', 'wind-profiler-50mhz-export-20223119073111.csv', 'wind-profiler-915mhz-export-20222919072959.csv'], './raw-data/20220525-launch/': ['amps-low-export-20223419043428.csv', 'field-mill-export-20222220122248.csv', 'no_merlincg_data_for_time_period.md', 'no_rain_data_for_time_period.md', 'weather-tower-export-20223519043513.csv', 'wind-profiler-50mhz-export-20223619043616.csv', 'wind-profiler-915mhz-export-20223419043427.csv'], './raw-data/20220608-launch/': ['amps-low-export-20222619042614.csv', 'field-mill-export-20221720121705.csv', 'merlin-cloud-to-ground-export-20222619042613.csv', 'rainfall-export-20221620121622.csv', 'weather-tower-export-20222519042559.csv', 'wind-profiler-50mhz-export-20222519042516.csv', 'wind-profiler-915mhz-export-20222319042358.csv'], './raw-data/20220612-launch/': ['amps-low-export-20221619041648.csv', 'field-mill-export-20221520121505.csv', 'merlin-cloud-to-ground-export-20221619041647.csv', 'rainfall-export-20221420121425.csv', 'weather-tower-export-20221719041734.csv', 'wind-profiler-50mhz-export-20221619041634.csv', 'wind-profiler-915mhz-export-20221519041522.csv'], './raw-data/20220619-launch/': ['amps-low-export-20220719040701.csv', 'field-mill-export-20221220121211.csv', 'merlin-cloud-to-ground-export-20220719040712.csv', 'rainfall-export-20221120121100.csv', 'weather-tower-export-20220719040758.csv', 'wind-profiler-50mhz-export-20220719040700.csv', 'wind-profiler-915mhz-export-20220619040611.csv'], './raw-data/20220629-launch/': ['amps-low-export-20225719035727.csv', 'merlin-cloud-to-ground-export-20225719035743.csv', 'no_lplws_data_for_time_period.md', 'no_rain_data_for_time_period.md', 'weather-tower-export-20225819035832.csv', 'wind-profiler-50mhz-export-20225719035726.csv', 'wind-profiler-915mhz-export-20225619035615.csv'], './raw-data/20220701-launch/': ['amps-low-export-20223919033959.csv', 'merlin-cloud-to-ground-export-20224219034239.csv', 'no_lplws_data_for_time_period.md', 'no_rain_data_for_time_period.md', 'weather-tower-export-20224419034450.csv', 'wind-profiler-50mhz-export-20223919033952.csv', 'wind-profiler-915mhz-export-20223719033733.csv'], './raw-data/20220707-launch/': ['amps-low-export-20222819032822.csv', 'merlin-cloud-to-ground-export-20222919032938.csv', 'no_lplws_data_for_time_period.md', 'no_rain_data_for_time_period.md', 'weather-tower-export-20223119033136.csv', 'wind-profiler-50mhz-export-20222719032743.csv', 'wind-profiler-915mhz-export-20222319032318.csv'], './raw-data/20220717-launch/': ['amps-low-export-20221119031120.csv', 'merlin-cloud-to-ground-export-20221219031232.csv', 'no_lplws_data_for_time_period.md', 'no_rain_data_for_time_period.md', 'weather-tower-export-20221519031510.csv', 'wind-profiler-50mhz-export-20221019031018.csv', 'wind-profiler-915mhz-export-20220519030505.csv']}
+DEBUG:root:Opening raw data file ./raw-data/20220401-launch/amps-low-export-20224119084101.csv
+DEBUG:root:Applying transform to amps-low file
+DEBUG:root:Opening raw data file ./raw-data/20220401-launch/merlin-cloud-to-ground-export-20224119084100.csv
+DEBUG:root:Applying transform to merlin c-g file
+DEBUG:root:Opening raw data file ./raw-data/20220401-launch/weather-tower-export-20224019084044.csv
+DEBUG:root:Applying transform to weather tower file
+DEBUG:root:Opening raw data file ./raw-data/20220401-launch/wind-profiler-50mhz-export-20224219084219.csv
+DEBUG:root:Applying transform to 50MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220401-launch/wind-profiler-915mhz-export-20223919083944.csv
+DEBUG:root:Applying transform to 915MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220421-launch/no_ampslow_data_for_time_period.md
+WARNING:root:./raw-data/20220421-launch/no_ampslow_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220421-launch/no_merlincg_data_for_time_period.md
+WARNING:root:./raw-data/20220421-launch/no_merlincg_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220421-launch/weather-tower-export-20220419080423.csv
+DEBUG:root:Applying transform to weather tower file
+DEBUG:root:Opening raw data file ./raw-data/20220421-launch/wind-profiler-50mhz-export-20220319080339.csv
+DEBUG:root:Applying transform to 50MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220421-launch/wind-profiler-915mhz-export-20220119080152.csv
+DEBUG:root:Applying transform to 915MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220429-launch/amps-low-export-20224619074603.csv
+DEBUG:root:Applying transform to amps-low file
+DEBUG:root:Opening raw data file ./raw-data/20220429-launch/field-mill-export-20223320123306.csv
+DEBUG:root:Applying transform to field mill (lplws) file
+DEBUG:root:Opening raw data file ./raw-data/20220429-launch/merlin-cloud-to-ground-export-20224619074617.csv
+DEBUG:root:Applying transform to merlin c-g file
+DEBUG:root:Opening raw data file ./raw-data/20220429-launch/no_rain_data_for_time_period.md
+WARNING:root:./raw-data/20220429-launch/no_rain_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220429-launch/weather-tower-export-20224919074906.csv
+DEBUG:root:Applying transform to weather tower file
+DEBUG:root:Opening raw data file ./raw-data/20220429-launch/wind-profiler-50mhz-export-20224619074601.csv
+DEBUG:root:Applying transform to 50MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220429-launch/wind-profiler-915mhz-export-20224419074438.csv
+DEBUG:root:Applying transform to 915MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220519-launch/amps-low-export-20223119073112.csv
+DEBUG:root:Applying transform to amps-low file
+DEBUG:root:Opening raw data file ./raw-data/20220519-launch/field-mill-export-20222820122855.csv
+DEBUG:root:Applying transform to field mill (lplws) file
+DEBUG:root:Opening raw data file ./raw-data/20220519-launch/no_merlincg_data_for_time_period.md
+WARNING:root:./raw-data/20220519-launch/no_merlincg_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220519-launch/no_rain_data_for_time_period.md
+WARNING:root:./raw-data/20220519-launch/no_rain_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220519-launch/weather-tower-export-20223119073153.csv
+DEBUG:root:Applying transform to weather tower file
+DEBUG:root:Opening raw data file ./raw-data/20220519-launch/wind-profiler-50mhz-export-20223119073111.csv
+DEBUG:root:Applying transform to 50MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220519-launch/wind-profiler-915mhz-export-20222919072959.csv
+DEBUG:root:Applying transform to 915MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220525-launch/amps-low-export-20223419043428.csv
+DEBUG:root:Applying transform to amps-low file
+DEBUG:root:Opening raw data file ./raw-data/20220525-launch/field-mill-export-20222220122248.csv
+DEBUG:root:Applying transform to field mill (lplws) file
+DEBUG:root:Opening raw data file ./raw-data/20220525-launch/no_merlincg_data_for_time_period.md
+WARNING:root:./raw-data/20220525-launch/no_merlincg_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220525-launch/no_rain_data_for_time_period.md
+WARNING:root:./raw-data/20220525-launch/no_rain_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220525-launch/weather-tower-export-20223519043513.csv
+DEBUG:root:Applying transform to weather tower file
+DEBUG:root:Opening raw data file ./raw-data/20220525-launch/wind-profiler-50mhz-export-20223619043616.csv
+DEBUG:root:Applying transform to 50MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220525-launch/wind-profiler-915mhz-export-20223419043427.csv
+DEBUG:root:Applying transform to 915MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220608-launch/amps-low-export-20222619042614.csv
+DEBUG:root:Applying transform to amps-low file
+DEBUG:root:Opening raw data file ./raw-data/20220608-launch/field-mill-export-20221720121705.csv
+DEBUG:root:Applying transform to field mill (lplws) file
+DEBUG:root:Opening raw data file ./raw-data/20220608-launch/merlin-cloud-to-ground-export-20222619042613.csv
+DEBUG:root:Applying transform to merlin c-g file
+DEBUG:root:Opening raw data file ./raw-data/20220608-launch/rainfall-export-20221620121622.csv
+DEBUG:root:Applying transform to rainfall file
+DEBUG:root:Opening raw data file ./raw-data/20220608-launch/weather-tower-export-20222519042559.csv
+DEBUG:root:Applying transform to weather tower file
+DEBUG:root:Opening raw data file ./raw-data/20220608-launch/wind-profiler-50mhz-export-20222519042516.csv
+DEBUG:root:Applying transform to 50MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220608-launch/wind-profiler-915mhz-export-20222319042358.csv
+DEBUG:root:Applying transform to 915MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220612-launch/amps-low-export-20221619041648.csv
+DEBUG:root:Applying transform to amps-low file
+DEBUG:root:Opening raw data file ./raw-data/20220612-launch/field-mill-export-20221520121505.csv
+DEBUG:root:Applying transform to field mill (lplws) file
+DEBUG:root:Opening raw data file ./raw-data/20220612-launch/merlin-cloud-to-ground-export-20221619041647.csv
+DEBUG:root:Applying transform to merlin c-g file
+DEBUG:root:Opening raw data file ./raw-data/20220612-launch/rainfall-export-20221420121425.csv
+DEBUG:root:Applying transform to rainfall file
+DEBUG:root:Opening raw data file ./raw-data/20220612-launch/weather-tower-export-20221719041734.csv
+DEBUG:root:Applying transform to weather tower file
+DEBUG:root:Opening raw data file ./raw-data/20220612-launch/wind-profiler-50mhz-export-20221619041634.csv
+DEBUG:root:Applying transform to 50MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220612-launch/wind-profiler-915mhz-export-20221519041522.csv
+DEBUG:root:Applying transform to 915MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220619-launch/amps-low-export-20220719040701.csv
+DEBUG:root:Applying transform to amps-low file
+DEBUG:root:Opening raw data file ./raw-data/20220619-launch/field-mill-export-20221220121211.csv
+DEBUG:root:Applying transform to field mill (lplws) file
+DEBUG:root:Opening raw data file ./raw-data/20220619-launch/merlin-cloud-to-ground-export-20220719040712.csv
+DEBUG:root:Applying transform to merlin c-g file
+DEBUG:root:Opening raw data file ./raw-data/20220619-launch/rainfall-export-20221120121100.csv
+DEBUG:root:Applying transform to rainfall file
+DEBUG:root:Opening raw data file ./raw-data/20220619-launch/weather-tower-export-20220719040758.csv
+DEBUG:root:Applying transform to weather tower file
+DEBUG:root:Opening raw data file ./raw-data/20220619-launch/wind-profiler-50mhz-export-20220719040700.csv
+DEBUG:root:Applying transform to 50MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220619-launch/wind-profiler-915mhz-export-20220619040611.csv
+DEBUG:root:Applying transform to 915MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220629-launch/amps-low-export-20225719035727.csv
+DEBUG:root:Applying transform to amps-low file
+DEBUG:root:Opening raw data file ./raw-data/20220629-launch/merlin-cloud-to-ground-export-20225719035743.csv
+DEBUG:root:Applying transform to merlin c-g file
+DEBUG:root:Opening raw data file ./raw-data/20220629-launch/no_lplws_data_for_time_period.md
+WARNING:root:./raw-data/20220629-launch/no_lplws_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220629-launch/no_rain_data_for_time_period.md
+WARNING:root:./raw-data/20220629-launch/no_rain_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220629-launch/weather-tower-export-20225819035832.csv
+DEBUG:root:Applying transform to weather tower file
+DEBUG:root:Opening raw data file ./raw-data/20220629-launch/wind-profiler-50mhz-export-20225719035726.csv
+DEBUG:root:Applying transform to 50MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220629-launch/wind-profiler-915mhz-export-20225619035615.csv
+DEBUG:root:Applying transform to 915MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220701-launch/amps-low-export-20223919033959.csv
+DEBUG:root:Applying transform to amps-low file
+DEBUG:root:Opening raw data file ./raw-data/20220701-launch/merlin-cloud-to-ground-export-20224219034239.csv
+DEBUG:root:Applying transform to merlin c-g file
+DEBUG:root:Opening raw data file ./raw-data/20220701-launch/no_lplws_data_for_time_period.md
+WARNING:root:./raw-data/20220701-launch/no_lplws_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220701-launch/no_rain_data_for_time_period.md
+WARNING:root:./raw-data/20220701-launch/no_rain_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220701-launch/weather-tower-export-20224419034450.csv
+DEBUG:root:Applying transform to weather tower file
+DEBUG:root:Opening raw data file ./raw-data/20220701-launch/wind-profiler-50mhz-export-20223919033952.csv
+DEBUG:root:Applying transform to 50MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220701-launch/wind-profiler-915mhz-export-20223719033733.csv
+DEBUG:root:Applying transform to 915MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220707-launch/amps-low-export-20222819032822.csv
+DEBUG:root:Applying transform to amps-low file
+DEBUG:root:Opening raw data file ./raw-data/20220707-launch/merlin-cloud-to-ground-export-20222919032938.csv
+DEBUG:root:Applying transform to merlin c-g file
+DEBUG:root:Opening raw data file ./raw-data/20220707-launch/no_lplws_data_for_time_period.md
+WARNING:root:./raw-data/20220707-launch/no_lplws_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220707-launch/no_rain_data_for_time_period.md
+WARNING:root:./raw-data/20220707-launch/no_rain_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220707-launch/weather-tower-export-20223119033136.csv
+DEBUG:root:Applying transform to weather tower file
+DEBUG:root:Opening raw data file ./raw-data/20220707-launch/wind-profiler-50mhz-export-20222719032743.csv
+DEBUG:root:Applying transform to 50MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220707-launch/wind-profiler-915mhz-export-20222319032318.csv
+DEBUG:root:Applying transform to 915MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220717-launch/amps-low-export-20221119031120.csv
+DEBUG:root:Applying transform to amps-low file
+DEBUG:root:Opening raw data file ./raw-data/20220717-launch/merlin-cloud-to-ground-export-20221219031232.csv
+DEBUG:root:Applying transform to merlin c-g file
+DEBUG:root:Opening raw data file ./raw-data/20220717-launch/no_lplws_data_for_time_period.md
+WARNING:root:./raw-data/20220717-launch/no_lplws_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220717-launch/no_rain_data_for_time_period.md
+WARNING:root:./raw-data/20220717-launch/no_rain_data_for_time_period.md is not a valid data file. Ignoring
+DEBUG:root:Opening raw data file ./raw-data/20220717-launch/weather-tower-export-20221519031510.csv
+DEBUG:root:Applying transform to weather tower file
+DEBUG:root:Opening raw data file ./raw-data/20220717-launch/wind-profiler-50mhz-export-20221019031018.csv
+DEBUG:root:Applying transform to 50MHz wind file
+DEBUG:root:Opening raw data file ./raw-data/20220717-launch/wind-profiler-915mhz-export-20220519030505.csv
+DEBUG:root:Applying transform to 915MHz wind file
+DEBUG:root:Loaded 39967 total data points
