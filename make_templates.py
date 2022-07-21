@@ -44,7 +44,7 @@ def raw_data_files_dict(raw_data_folders: list, data_directory: str) -> dict:
             elif "Profiler915" in f:
                 f = filenames[0]
         if len(files_list) < 7:
-            print(f'Only {len(files_list)} Found')
+            print(f'Only {len(files_list)} Found in {path}')
             missing_files = list(set(filenames) - set(files_list))
             print(missing_files)
             copy_files(path,missing_files)
