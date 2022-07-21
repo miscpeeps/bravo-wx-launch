@@ -379,8 +379,6 @@ def split_raw_data_dict(raw_data_files: dict) -> list:
     split.append(dict(list(s1.items())[:len(s1)//2]))
     split.append(dict(list(s2.items())[len(s2)//2:]))
     split.append(dict(list(s2.items())[:len(s2)//2]))
-
-    print(split)
     return split
 
 # main program
@@ -398,11 +396,40 @@ def main():
     # split raw_data_files into multiple dictionaries for multiprocessing
     print("prior to split")
     split_raw_data = split_raw_data_dict(raw_data_files)
-    print("post split")
-    print(split_raw_data)
+    print("split 1")
+    print(split_raw_data[0])
+    print("split 2")
+    print(split_raw_data[1])
+    print("split 3")
+    print(split_raw_data[2])
+    print("split 3")
+    print(split_raw_data[2])
+    
+    
+    p1 = Process(target=transform_data, args=(3, ))
+    p1.start()
+
+    p2 = Process(target=transform_data, args=(2, ))
+    p2.start()
+
+    p3 = Process(target=transform_data, args=(1, ))
+    p3.start()
+
+    p4 = Process(target=transform_data, args=(1, ))
+    p4.start()
+
+    p1.join()
+    p2.join()
+    p3.join()
+    p4.join()
+
+    print("finished main")
+
 
     # perform data transforms
     # transform_data(raw_data_files, results_directory, event_times, number_raw_data_files)
+
+
     return
 
 if __name__ == '__main__':
