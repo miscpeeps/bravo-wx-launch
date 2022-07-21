@@ -148,6 +148,10 @@ def wind_profiler_915(path, launchtime):
         interp_df[final_labels]=np.nan
 
     if interp_df.isnull().sum().sum() > 0:
-        logging.warning("NaN values present in processed wind_50 data")
+        logging.warning("NaN values present in processed wind_915 data")
+    
+    if len(interp_df.columns)>30:
+        interp_df=interp_df.loc[:,final_labels]
+        logging.warning("Dropeed extra columns")
         
     return interp_df
