@@ -197,6 +197,13 @@ def transform_data(raw_data_files: dict, results_directory: str,
     transform_start_time = time.time()
     logging.debug("Started data transforms at %s", str(transform_start_time))
     
+    # uncomment below for single directory tests
+    """
+    raw_data_files = {}
+    raw_data_files["./Scraped_Files/20220309-launch/"] = ['AmpsLowResolution.csv', 'FieldMill.csv', 'MerlinCloudToGround.csv', 
+                                                          'Rainfall.csv', 'WeatherTower.csv', 'WindProfiler50.csv', 'WindProfiler915.csv']
+    """
+
     for key in raw_data_files:
         
         # initialize dataframe joiner for each new directory
