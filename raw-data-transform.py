@@ -62,7 +62,7 @@ def raw_data_directory_list(raw_data_directory: str) -> list:
     return dirs_list
 
 # create dictionary of all files in each folder in raw-data
-def raw_data_files_dict(raw_data_folders: list) -> dict:
+def raw_data_files_dict(raw_data_folders: list, data_directory: str) -> dict:
     """Scans each directory in raw-data and lists the files in each.
     Returns a dictionary object with:
     key = string -> directory name
@@ -75,7 +75,7 @@ def raw_data_files_dict(raw_data_folders: list) -> dict:
     raw_data_dict = {}
     for index, value in enumerate(raw_data_folders):
         # make path string for file scan location
-        path = "./raw-data/" + raw_data_folders[index] + "/"
+        path = data_directory + raw_data_folders[index] + "/"
         logging.debug("Scanning folder %s", path)
         files_list = [f.name for f in os.scandir(path) if f.is_file()]
         number_files_scanned += len(files_list)
@@ -177,11 +177,11 @@ def transform_data(raw_data_files: dict, results_directory: str,
         # build MM/DD/YYYY string
         date = date[4:6] + "/" + date[6:] + "/" + date[:4]
         logging.debug("Initial date string: %s", date)
-        if "0" in date[3:5]:
+        if "0" in date[3:4]:
             # fix leading 0 in day
             date = date[0:3] + date[4:]
             logging.debug("Fixed day: %s", date)
-        if "0" in date[:2]:
+        if "0" in date[0:2]:
             # fix leading 0 in month
             date = date[1:]
             logging.debug("Fixed month: %s", date)
@@ -197,39 +197,39 @@ def transform_data(raw_data_files: dict, results_directory: str,
 
             # switch case based on what kind of data file
             if ext == ".csv":
-                if "amps" in file_name:
+                if "Amps" in file_name:
                     logging.debug("Applying transform to amps-low file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call amps low transform
                     df_dict["amps_df"] = amps_low_transform.lowamps(file_name, event_times[date_key])
                     print(type(df_dict["amps_df"]))
-                elif "field-mill" in file_name:
+                elif "Field" in file_name:
                     logging.debug("Applying transform to field mill (lplws) file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call lplws field mill transform
-                elif "merlin" in file_name:
+                elif "Merlin" in file_name:
                     logging.debug("Applying transform to merlin c-g file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call merlin c-g transform
-                elif "rainfall" in file_name:
+                elif "Rainfall" in file_name:
                     logging.debug("Applying transform to rainfall file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call rainfall transform
-                elif "tower" in file_name:
+                elif "Tower" in file_name:
                     logging.debug("Applying transform to weather tower file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call weather tower transform
-                elif "50mhz" in file_name:
+                elif "Profiler50" in file_name:
                     logging.debug("Applying transform to 50MHz wind file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call 50Mhz wind transform
-                elif "915mhz" in file_name:
+                elif "Profiler915" in file_name:
                     logging.debug("Applying transform to 915MHz wind file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
@@ -245,11 +245,15 @@ def transform_data(raw_data_files: dict, results_directory: str,
     print("Successfully loaded " + total_data_points + " total data points")
 
 # main program
+
+# directory for raw data files
+data_directory = "./Scraped_Files/"
+
 results_directory = make_results_directory(timestamp)
 
-raw_data_folders = raw_data_directory_list("./raw-data")
+raw_data_folders = raw_data_directory_list(data_directory)
 
-raw_data_files, number_raw_data_files = raw_data_files_dict(raw_data_folders)
+raw_data_files, number_raw_data_files = raw_data_files_dict(raw_data_folders, data_directory)
 
 event_times = make_events_dict("launches.csv")
 
