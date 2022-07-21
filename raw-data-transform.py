@@ -270,9 +270,9 @@ def transform_data(raw_data_files: dict, results_directory: str,
                 logging.warning("%s is not a valid data file. Ignoring", file_name)
             
 
-        # Check if dataframe joiner has all 5 expected dataframes and merge
-        if len(df_dict) == 5:
-            logging.debug("Have the expected 5 dataframes. Beginning merge for date %s", isodate)
+        # Check if dataframe joiner has all 6 expected dataframes and merge
+        if len(df_dict) == 6:
+            logging.debug("Have the expected 6 dataframes. Beginning merge for date %s", isodate)
             logging.debug("Info on amps low:")
             logging.debug(df_dict["amps_df"])     
             logging.debug("Info on field mill:")
@@ -290,6 +290,8 @@ def transform_data(raw_data_files: dict, results_directory: str,
             dataframes = [df_dict["amps_df"], df_dict["fm_df"], df_dict["mcg_df"], df_dict["rain_df"],
                           df_dict["50_df"]]
             merged_data = dataframes[0].join(dataframes[1:])
+            logging.debug("Merged dataframe")
+            logging.debug(merged_data)
 
             # write to new csv in results folder
             merged_filename = results_directory + isodate + "-" + data_type + ".csv"
@@ -298,7 +300,10 @@ def transform_data(raw_data_files: dict, results_directory: str,
             logging.debug("Wrote merged data file to %s", merged_filename)
         else:
             number_merge_errors += 1
-            logging.warning("Insufficient dataframes for merge. %s merge errors so far this run", str(number_merge_errors))
+            tqdm.write("Insufficient dataframes for merge for date " + isodate + ". "
+                       + str(number_merge_errors) + " merge errors so far this run")
+            logging.warning("Insufficient dataframes for merge for date %s. %s merge errors so far this run",
+                            isodate, str(number_merge_errors))
 
     # close progress bar
     pbar.close()
