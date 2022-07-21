@@ -8,7 +8,7 @@ import time
 import logging
 import pandas as pd
 from tqdm import tqdm
-import multiprocessing
+from multiprocessing import Process
 
 # import other python files for data transform
 import merlin_transform
@@ -369,9 +369,8 @@ def transform_data(raw_data_files: dict, results_directory: str,
     logging.debug("Had %s dataframe merge errors", number_merge_errors)
     print("Had " + number_merge_errors + " dataframe merge errors")
 
-def parallel_data_processing():
-    # test
-    s = "temp"
+def split_raw_data_dict(raw_data_files: dict) -> list:
+
 
 # main program
 def main():
@@ -385,8 +384,10 @@ def main():
     raw_data_files, number_raw_data_files = raw_data_files_dict(raw_data_folders, data_directory)
     # all launches and scrubs from given csv
     event_times = make_events_dict(launch_list_file_path="launches.csv", scrub_list_file_path="scrubs.csv")
+    # split raw_data_files into multiple dictionaries for multiprocessing
+    split_raw_data = split_raw_data_dict(raw_data_files)
     # perform data transforms
-    transform_data(raw_data_files, results_directory, event_times, number_raw_data_files)
+    # transform_data(raw_data_files, results_directory, event_times, number_raw_data_files)
     return
 
 if __name__ == '__main__':
