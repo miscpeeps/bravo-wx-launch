@@ -29,7 +29,7 @@ timestamp_char_remove = {":", "-", " ", "."}
 for char in timestamp_char_remove:
     timestamp = timestamp.replace(char, "")
 
-log_filename = "data-transform-" + timestamp + ".log"
+log_filename = "./logs/run-" + timestamp + ".log"
 
 logging.basicConfig(filename=log_filename, encoding="utf-8", level=logging.DEBUG)
 
@@ -38,7 +38,7 @@ def make_results_directory(timestamp: str) -> str:
     """Makes a new timestamped directory.
     Returns string of new directory name."""
 
-    new_dir = "./data-transform-" + timestamp +"/"
+    new_dir = "./transformed-data/run-" + timestamp +"/"
 
     print("Attempting to create results directory:" + new_dir)
 
@@ -255,7 +255,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
             else:
                 logging.warning("%s is not a valid data file. Ignoring", file_name)
         
-        # Check if dataframe joiner has all 6 expected dataframes and merge
+        # Check if dataframe joiner has all 5 expected dataframes and merge
         if len(df_dict) == 5:
             logging.debug("Have the expected 5 dataframes. Beginning merge")
             print("Info on amps:")
@@ -299,5 +299,3 @@ raw_data_files, number_raw_data_files = raw_data_files_dict(raw_data_folders, da
 event_times = make_events_dict("launches.csv")
 
 transform_data(raw_data_files, results_directory, event_times, number_raw_data_files)
-
-# pass datetime object and file path string of launch/scrub zulu to transform
