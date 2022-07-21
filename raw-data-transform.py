@@ -269,15 +269,15 @@ def transform_data(raw_data_files: dict, results_directory: str,
         # Check if dataframe joiner has all 5 expected dataframes and merge
         if len(df_dict) == 5:
             logging.debug("Have the expected 5 dataframes. Beginning merge for date %s", isodate)
-            print("Info on amps:")
+            logging.debug("Info on amps:")
             logging.debug(df_dict["amps_df"])     
-            print("Info on fm:")
+            logging.debug("Info on fm:")
             logging.debug(df_dict["fm_df"])       
-            print("Info on mcg:")
+            logging.debug("Info on mcg:")
             logging.debug(df_dict["mcg_df"])
-            print("Info on rain:")
+            logging.debug("Info on rain:")
             logging.debug(df_dict["rain_df"])
-            print("Info on 50:")
+            logging.debug("Info on 50:")
             logging.debug(df_dict["50_df"])
 
             # make an ordered list of dataframes to always join in the same sequence
@@ -287,26 +287,30 @@ def transform_data(raw_data_files: dict, results_directory: str,
 
             # write to new csv in results folder
             merged_filename = results_directory + isodate + "-" + data_type + ".csv"
-            merged_data.to_csv(merged_filename)
+            merged_data.to_csv(merged_filename, na_rep="NaN")
             logging.debug("Wrote merged data file to %s", merged_filename)
         else:
-            logging.debug("Insufficient dataframes for merge. Discarding")
+            logging.warning("Insufficient dataframes for merge. Discarding")
              
     total_data_points = "{:,}".format(total_data_points)
     logging.debug("Loaded %s total data points", total_data_points)
     print("Successfully loaded " + total_data_points + " total data points")
 
 # main program
+def main():
+    # directory for raw data files
+    data_directory = "./Scraped_Files/"
+    # directory for transformed data
+    results_directory = make_results_directory(timestamp)
+    # all folders with raw data
+    raw_data_folders = raw_data_directory_list(data_directory)
+    # all raw data files and the number of raw data files
+    raw_data_files, number_raw_data_files = raw_data_files_dict(raw_data_folders, data_directory)
+    # all launches and scrubs from given csv
+    event_times = make_events_dict("launches.csv")
+    # perform data transforms
+    transform_data(raw_data_files, results_directory, event_times, number_raw_data_files)
+    return
 
-# directory for raw data files
-data_directory = "./Scraped_Files/"
-
-results_directory = make_results_directory(timestamp)
-
-raw_data_folders = raw_data_directory_list(data_directory)
-
-raw_data_files, number_raw_data_files = raw_data_files_dict(raw_data_folders, data_directory)
-
-event_times = make_events_dict("launches.csv")
-
-transform_data(raw_data_files, results_directory, event_times, number_raw_data_files)
+if __name__ == '__main__':
+    main()
