@@ -14,6 +14,7 @@ import merlin_transform
 import amps_low_transform
 import field_mill_transform
 import raingauge_transform
+import weather_tower_transform
 import wind_profiler_50_transform
 import wind_profiler_915_transform
 
@@ -195,7 +196,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
     pbar = tqdm(total=number_raw_data_files)
     transform_start_time = time.time()
     logging.debug("Started data transforms at %s", str(transform_start_time))
-    """
+    
     for key in raw_data_files:
         
         # initialize dataframe joiner for each new directory
@@ -272,7 +273,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call weather tower transform
-                    # df_dict["wt_df"] = raingauge_transform.rainfall(file_name, event_times[date_key])
+                    df_dict["wt_df"] = weather_tower_transform.weather_towers(file_name, event_times[date_key])
                 elif "Profiler50" in file_name:
                     logging.debug("Applying transform to 50MHz wind file")
                     df_count = pd.read_csv(file_name)
@@ -291,9 +292,9 @@ def transform_data(raw_data_files: dict, results_directory: str,
                 logging.warning("%s is not a valid data file. Ignoring", file_name)
             
 
-        # Check if dataframe joiner has all 6 expected dataframes and merge
-        if len(df_dict) == 6:
-            logging.debug("Have the expected 6 dataframes. Beginning merge for date %s", isodate)
+        # Check if dataframe joiner has all 7 expected dataframes and merge
+        if len(df_dict) == 7:
+            logging.debug("Have the expected 7 dataframes. Beginning merge for date %s", isodate)
             logging.debug("Info on amps low:")
             logging.debug(df_dict["amps_df"])     
             logging.debug("Info on field mill:")
@@ -302,6 +303,8 @@ def transform_data(raw_data_files: dict, results_directory: str,
             logging.debug(df_dict["mcg_df"])
             logging.debug("Info on rainfall:")
             logging.debug(df_dict["rain_df"])
+            logging.debug("Info on weather tower:")
+            logging.debug(df_dict["wt_df"])
             logging.debug("Info on 50 MHz:")
             logging.debug(df_dict["50_df"])
             logging.debug("Info on 915 MHz:")
@@ -309,10 +312,20 @@ def transform_data(raw_data_files: dict, results_directory: str,
 
             # make an ordered list of dataframes to always join in the same sequence
             dataframes = [df_dict["amps_df"], df_dict["fm_df"], df_dict["mcg_df"], df_dict["rain_df"],
-                          df_dict["50_df"]]
+                          df_dict["wt_df"], df_dict["50_df"], df_dict["915_df"]]
             merged_data = dataframes[0].join(dataframes[1:])
             logging.debug("Successfully merged dataframe %s", isodate)
+
+            # add launch or scrub identifier column (1 = scrub, 0 = launch)
+            if data_type == "scrub":
+                id_col = [1] * 49
+            else:
+                id_col = [0] * 49
+            logging.debug("Successfully merged scrub_id for %s", data_type)
             logging.debug(merged_data)
+
+            # merge scrub identifier column to dataframe
+            merged_data["scrub_id"] = id_col            
 
             # write to new csv in results folder
             merged_filename = results_directory + isodate + "-" + data_type + ".csv"
@@ -325,7 +338,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
                        + str(number_merge_errors) + " merge errors so far this run")
             logging.warning("Insufficient dataframes for merge for date %s. %s merge errors so far this run",
                             isodate, str(number_merge_errors))
-    """
+    
     # close progress bar
     pbar.close()
     transform_stop_time = time.time()
