@@ -114,7 +114,7 @@ def raw_data_files_dict(raw_data_folders: list, data_directory: str) -> dict:
 
     return raw_data_dict, number_files_scanned
 
-def make_events_dict(events_list_file_path: str) -> dict:
+def make_events_dict(launch_list_file_path: str, scrub_list_file_path: str) -> dict:
     """Extracts event (launches and scrubs) times and dates from a
     given input file. Returns a dictionary with a key of dates and
     value pair of datetime objects corresponding to event times"""
@@ -125,23 +125,42 @@ def make_events_dict(events_list_file_path: str) -> dict:
 
     # load and transform launch events
     try:
-        df = pd.read_csv(events_list_file_path)
-        logging.debug("Loaded events list file %s", events_list_file_path)
+        df = pd.read_csv(launch_list_file_path)
+        logging.debug("Loaded launch list file %s", launch_list_file_path)
     except:
-        logging.error("Can't find events file to load %s", events_list_file_path)
-        raise OSError("Can't find events file to load (%s)!" % (events_list_file_path))
-    logging.debug("Full events table:")
+        logging.error("Can't find launch file to load %s", launch_list_file_path)
+        raise OSError("Can't find launch file to load (%s)!" % (launch_list_file_path))
+    logging.debug("Launch events table:")
     logging.debug(df)
     
-    # isolate data
+    # isolate launch data
     df.drop(df.columns.difference(["time (z)","launch date"]), axis=1, inplace=True)
-    logging.debug("Edited events table:")
+    logging.debug("Edited launch table:")
     logging.debug(df)
 
-    # translate dataframe info to dictionary key (date):value (time)
+    # translate launch dataframe info to dictionary key (date):value (time)
     for index, row in df.iterrows():
         events_list[row["launch date"]] = row["time (z)"]
+
+    # load and transform scrub events
+    try:
+        df = pd.read_csv(scrub_list_file_path)
+        logging.debug("Loaded scrub list file %s", scrub_list_file_path)
+    except:
+        logging.error("Can't find scrub file to load %s", scrub_list_file_path)
+        raise OSError("Can't find scrub file to load (%s)!" % (scrub_list_file_path))
+    logging.debug("Scrub events table:")
+    logging.debug(df)
     
+    # isolate scrub data
+    df.drop(df.columns.difference(["Time of Scrub (Z)","Date of Scrub"]), axis=1, inplace=True)
+    logging.debug("Edited scrub table:")
+    logging.debug(df)
+
+    # translate launch dataframe info to dictionary key (date):value (time)
+    for index, row in df.iterrows():
+        events_list[row["Date of Scrub"]] = row["Time of Scrub (Z)"]
+
     logging.debug("%s event times by date string:", str(len(events_list)))
     logging.debug(events_list)    
 
@@ -340,7 +359,7 @@ def main():
     # all raw data files and the number of raw data files
     raw_data_files, number_raw_data_files = raw_data_files_dict(raw_data_folders, data_directory)
     # all launches and scrubs from given csv
-    event_times = make_events_dict("launches.csv")
+    event_times = make_events_dict(launch_list_file_path="launches.csv", scrub_list_file_path="scrubs.csv")
     # perform data transforms
     transform_data(raw_data_files, results_directory, event_times, number_raw_data_files)
     return
