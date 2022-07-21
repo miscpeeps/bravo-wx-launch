@@ -3,6 +3,11 @@ from datetime import datetime as dt
 import numpy as np
 import pandas as pd
 
+import logging
+logger = logging.getLogger(__name__)
+
+transform = 'Rain Gauge'
+
 def time_date(row):
     row['datetime'] = f"{row['Event Date']} {row['Event Time']}"
     row['datetime'] = pd.to_datetime(row['datetime'])
@@ -33,9 +38,10 @@ def rainfall(path, launchtime):
 
 #          # created NULL column
         groupby.drop(columns='NULL', inplace=True)
+        logging.debug(f'Successfully transformed data for {transform} at {launchtime} from {path}')
         
     except:
-        print(f"error populating rain gauge data for {launchtime}")
+        logging.warning(f'Generating empty dataframe for {transform} at {launchtime} from {path}')
         groupby=pd.DataFrame(columns=['Rain Gauge Inches'], index=pd.date_range(launchtime - datetime.timedelta(hours=4), launchtime,freq='5T'))
     groupby = groupby.fillna(0)
     

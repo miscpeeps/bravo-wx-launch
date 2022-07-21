@@ -3,6 +3,11 @@ from datetime import datetime as dt
 import numpy as np
 import pandas as pd
 
+import logging
+logger = logging.getLogger(__name__)
+
+transform = 'Field Mill'
+
 def time_date(row):
     row['datetime'] = f"{row['Event Date']} {row['Event Time']}"
     row['datetime'] = pd.to_datetime(row['datetime'])
@@ -33,9 +38,10 @@ def field_mill(path, launchtime):
          # created NULL column
         groupby.drop(columns='NULL', inplace=True)
         groupby = groupby.fillna(groupby['Field Mill Mean'].mean())
+        logging.debug(f'Successfully transformed data for {transform} at {launchtime} from {path}')
         
     except:
-        print(f"error populating field mill data for {launchtime}")
+        logging.warning(f'Generating empty dataframe for {transform} at {launchtime} from {path}')
         groupby=pd.DataFrame(columns=['Field Mill Mean'], index=pd.date_range(launchtime - datetime.timedelta(hours=4), launchtime,freq='5T'))
 
         

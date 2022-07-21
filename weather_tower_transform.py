@@ -3,6 +3,11 @@ from datetime import datetime as dt
 import numpy as np
 import pandas as pd
 
+import logging
+logger = logging.getLogger(__name__)
+
+transform = 'Weather Towers'
+
 def time_date(row):
     row['datetime'] = f"{row['Event Date']} {row['Event Time']}"
     row['datetime'] = pd.to_datetime(row['datetime'])
@@ -45,9 +50,10 @@ def weather_towers(path, launchtime):
         #display(groupby)
         groupby.interpolate(inplace=True)
         groupby.bfill(inplace=True)
+        logging.debug(f'Successfully transformed data for {transform} at {launchtime} from {path}')
         
     except:
-        print(f"error populating winds towers for {launchtime}")
+        logging.warning(f'Generating empty dataframe for {transform} at {launchtime} from {path}')
         groupby=pd.DataFrame(columns=['Avg Wind Speed 0002 NW  SE', 'Avg Wind Speed 0002 SE  SE',
        'Avg Wind Speed 0006 NW  SE', 'Avg Wind Speed 0006 SE  SE',
        'Avg Wind Speed 0110 NW  SE', 'Avg Wind Speed 0110 SE  SE',
