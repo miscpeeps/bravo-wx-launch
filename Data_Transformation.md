@@ -29,10 +29,16 @@
 
 ## Weather-Tower
 1. Groupby tower
-2. fill NAs with average value
-3. Find max peak wind speed from a groupby
+3. fill NAs with average value
+4. Find max peak wind speed from a groupby
 
 ## Merlin-Cloud-Ground (Lightning)
 1. Bin times to 15 minute windows
 2. avg signal strength
 3. sum of strikes
+
+## Rain
+1. take averages 
+
+## Field mill
+1. take averages
