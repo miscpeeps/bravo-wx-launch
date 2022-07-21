@@ -171,7 +171,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
     number_csvs_written = 0
     number_merge_errors = 0
 
-    print("Beginning data transforms on files in " + str(len(raw_data_files)) + " directories")
+    print("Beginning data transforms on " + str(number_raw_data_files) + " files in " + str(len(raw_data_files)) + " directories")
     # uncomment below and in imports for neat status bar
     pbar = tqdm(total=number_raw_data_files)
     for key in raw_data_files:
