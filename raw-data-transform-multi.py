@@ -185,18 +185,25 @@ def make_events_dict(launch_list_file_path: str, scrub_list_file_path: str) -> d
     return events_list
 
 def transform_data(raw_data_files: dict, results_directory: str, 
-                   event_times: dict, number_raw_data_files: int) -> None:
+                   event_times: dict, number_raw_data_files: int,
+                   worker_number: int) -> None:
     """Transforms raw data to format suitable for ML modeling. Writes consolidated
-    data files to disk as new csv files"""
+    data files to disk as new csv files
+    
+    Now running in parallel"""
 
     # gather neat info
     total_data_points = 0
     number_csvs_written = 0
     number_merge_errors = 0
+    number_raw_data_files = 0
+    for key in raw_data_files:
+        number_raw_data_files += len(raw_data_files[key])
+    
 
-    print("Beginning data transforms on " + str(number_raw_data_files) + " files in " + str(len(raw_data_files)) + " directories")
+    print("Worker " + str(worker_number) + " beginning data transforms on " + str(number_raw_data_files) + " files in " + str(len(raw_data_files)) + " directories")
     # uncomment below and in imports for neat status bar
-    pbar = tqdm(total=number_raw_data_files)
+
     transform_start_time = time.time()
     logging.debug("Started data transforms at %s", str(transform_start_time))
     
@@ -251,7 +258,6 @@ def transform_data(raw_data_files: dict, results_directory: str,
             logging.debug("Opening raw data file %s", file_name)
             # Get file extension for checking and path for passing correct datetime object to transformers
             path, ext = os.path.splitext(file_name)
-            pbar.update(1)
             # switch case based on what kind of data file
             if ext == ".csv":
                 if "Amps" in file_name:
@@ -344,13 +350,9 @@ def transform_data(raw_data_files: dict, results_directory: str,
             logging.debug("Wrote merged data file to %s", merged_filename)
         else:
             number_merge_errors += 1
-            tqdm.write("Insufficient dataframes for merge for date " + isodate + ". "
-                       + str(number_merge_errors) + " merge errors so far this run")
             logging.warning("Insufficient dataframes for merge for date %s. %s merge errors so far this run",
                             isodate, str(number_merge_errors))
     
-    # close progress bar
-    pbar.close()
     transform_stop_time = time.time()
     logging.debug("Completed data transforms at %s", str(transform_start_time))
 
@@ -397,10 +399,10 @@ if __name__ == '__main__':
     split_raw_data = split_raw_data_dict(raw_data_files)
 
     with Pool(processes=4) as pool:
-        pool.map(transform_data, [(split_raw_data[0], results_directory, event_times, number_raw_data_files),
-                                  [split_raw_data[1], results_directory, event_times, number_raw_data_files],
-                                  [split_raw_data[2], results_directory, event_times, number_raw_data_files],
-                                  [split_raw_data[3], results_directory, event_times, number_raw_data_files]])
+        pool.starmap(transform_data, [(split_raw_data[0], results_directory, event_times, number_raw_data_files, 0),
+                                      (split_raw_data[1], results_directory, event_times, number_raw_data_files, 1),
+                                      (split_raw_data[2], results_directory, event_times, number_raw_data_files, 2),
+                                      (split_raw_data[3], results_directory, event_times, number_raw_data_files, 3)])
 
     """ 
     p1 = Process(target=transform_data, args=(split_raw_data[0], results_directory, event_times, number_raw_data_files, ))
