@@ -5,8 +5,8 @@ import os
 import datetime
 import csv
 import logging
-from typing import Dict
 import pandas as pd
+#from tqdm import tqdm
 
 # import other python files for data transform
 import merlin_transform
@@ -89,9 +89,9 @@ def raw_data_files_dict(raw_data_folders: list) -> dict:
     logging.debug("Returned raw data file dictionary, found %s files", str(number_files_scanned))
     logging.debug(raw_data_dict)
 
-    print("Successfully scanned raw-data files, found " + str(len(raw_data_dict)) + " files")
+    print("Successfully scanned raw-data files, found " + str(number_files_scanned) + " files")
 
-    return raw_data_dict
+    return raw_data_dict, number_files_scanned
 
 def make_events_dict(events_list_file_path: str) -> dict:
     """Extracts event (launches and scrubs) times and dates from a
@@ -140,18 +140,23 @@ def make_events_dict(events_list_file_path: str) -> dict:
     
     return events_list
 
-def transform_data(raw_data_files: dict, results_directory: str, event_times: dict) -> None:
+def transform_data(raw_data_files: dict, results_directory: str, 
+                   event_times: dict, number_raw_data_files: int) -> None:
     """Transforms raw data to format suitable for ML modeling. Writes consolidated
     data files to disk as new csv files"""
 
     # gather neat info
     total_data_points = 0
+    number_transformed_data_files = 0
 
     # dict to hold transformed dataframes
     df_dict = {}
 
+    print("Beginning data transforms on files in " + str(len(raw_data_files)) + " directories")
+    # uncomment below and in imports for neat status bar
+    # for key in tqdm(raw_data_files):
     for key in raw_data_files:
-        # determine if data is from launch or scrub
+        # determine if data is from launch or scrub for later tagging
         if "launch" in key:
             data_type = "launch"
             logging.debug("Directory %s detected as launch data directory", key)
@@ -162,62 +167,92 @@ def transform_data(raw_data_files: dict, results_directory: str, event_times: di
             logging.error("ERROR: Could not determine launch or scrub data type from folder name %s. Exiting.", key)
             raise Exception("ERROR: Could not determine launch or scrub data type from folder name. Exiting.")
 
+        # list all files in selected directory
         files = raw_data_files[key]
+        
+        # construct date_key for event_times datetime objects
+        date = key.split("/")
+        date = date[-2].split("-")
+        date = date[0]
+        # build MM/DD/YYYY string
+        date = date[4:6] + "/" + date[6:] + "/" + date[:4]
+        logging.debug("Initial date string: %s", date)
+        if "0" in date[3:5]:
+            # fix leading 0 in day
+            date = date[0:3] + date[4:]
+            logging.debug("Fixed day: %s", date)
+        if "0" in date[:2]:
+            # fix leading 0 in month
+            date = date[1:]
+            logging.debug("Fixed month: %s", date)
+        date_key = date
+        logging.debug("Parsed date key as: %s", date_key)
+
+        # perform data transforms on files in directory
         for index, value in enumerate(files):
             file_name = key + files[index]
             logging.debug("Opening raw data file %s", file_name)
-            ext = os.path.splitext(file_name)[-1].lower()
+            # Get file extension for checking and path for passing correct datetime object to transformers
+            path, ext = os.path.splitext(file_name)
+
+            # switch case based on what kind of data file
             if ext == ".csv":
                 if "amps" in file_name:
                     logging.debug("Applying transform to amps-low file")
-                    amps_df = pd.read_csv(file_name)
-                    total_data_points += amps_df.shape[0] * amps_df.shape[1]
+                    df_count = pd.read_csv(file_name)
+                    total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call amps low transform
+                    df_dict["amps_df"] = amps_low_transform.lowamps(file_name, event_times[date_key])
+                    print(type(df_dict["amps_df"]))
                 elif "field-mill" in file_name:
                     logging.debug("Applying transform to field mill (lplws) file")
-                    fm_df = pd.read_csv(file_name)
-                    total_data_points += fm_df.shape[0] * fm_df.shape[1]
+                    df_count = pd.read_csv(file_name)
+                    total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call lplws field mill transform
                 elif "merlin" in file_name:
                     logging.debug("Applying transform to merlin c-g file")
-                    merlin_df = pd.read_csv(file_name)
-                    total_data_points += merlin_df.shape[0] * merlin_df.shape[1]
+                    df_count = pd.read_csv(file_name)
+                    total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call merlin c-g transform
                 elif "rainfall" in file_name:
                     logging.debug("Applying transform to rainfall file")
-                    rain_df = pd.read_csv(file_name)
-                    total_data_points += rain_df.shape[0] * rain_df.shape[1]
+                    df_count = pd.read_csv(file_name)
+                    total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call rainfall transform
                 elif "tower" in file_name:
                     logging.debug("Applying transform to weather tower file")
-                    wt_df = pd.read_csv(file_name)
-                    total_data_points += wt_df.shape[0] * wt_df.shape[1]
+                    df_count = pd.read_csv(file_name)
+                    total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call weather tower transform
                 elif "50mhz" in file_name:
                     logging.debug("Applying transform to 50MHz wind file")
-                    mhz50_df = pd.read_csv(file_name)
-                    total_data_points += mhz50_df.shape[0] * mhz50_df.shape[1]
+                    df_count = pd.read_csv(file_name)
+                    total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call 50Mhz wind transform
                 elif "915mhz" in file_name:
                     logging.debug("Applying transform to 915MHz wind file")
-                    mhz915_df = pd.read_csv(file_name)
-                    total_data_points += mhz915_df.shape[0] * mhz915_df.shape[1]
+                    df_count = pd.read_csv(file_name)
+                    total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call 915Mhz wind transform
                 else:
                     logging.warning("%s is not a valid csv file. Ignoring", file_name)
             else:
                 logging.warning("%s is not a valid data file. Ignoring", file_name)
-    logging.debug("Loaded %s total data points", "{:,}".format(total_data_points))
+        # status update
+    
+    total_data_points = "{:,}".format(total_data_points)
+    logging.debug("Loaded %s total data points", total_data_points)
+    print("Successfully loaded " + total_data_points + " total data points")
 
 # main program
 results_directory = make_results_directory(timestamp)
 
 raw_data_folders = raw_data_directory_list("./raw-data")
 
-raw_data_files = raw_data_files_dict(raw_data_folders)
+raw_data_files, number_raw_data_files = raw_data_files_dict(raw_data_folders)
 
 event_times = make_events_dict("launches.csv")
 
-transform_data(raw_data_files, results_directory, event_times)
+transform_data(raw_data_files, results_directory, event_times, number_raw_data_files)
 
 # pass datetime object and file path string of launch/scrub zulu to transform
