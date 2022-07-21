@@ -24,12 +24,23 @@ warnings.filterwarnings("ignore")
 # start logging
 timestamp = str(datetime.datetime.now())
 
+# make logs directory
+if not os.path.exists("./logs/"):
+    try:
+        os.makedirs("./logs/")
+        logging.debug("Created logging directory")
+    except:
+        logging.error("Can't create logging directory")
+        raise OSError("Can't create logging directory") 
+    else:
+        logging.debug("Logging directory already exists")       
+
 # remove characters from timestamp
 timestamp_char_remove = {":", "-", " ", "."}
 for char in timestamp_char_remove:
     timestamp = timestamp.replace(char, "")
 
-log_filename = "data-transform-" + timestamp + ".log"
+log_filename = "./logs/run-" + timestamp + ".log"
 
 logging.basicConfig(filename=log_filename, encoding="utf-8", level=logging.DEBUG)
 
@@ -38,14 +49,14 @@ def make_results_directory(timestamp: str) -> str:
     """Makes a new timestamped directory.
     Returns string of new directory name."""
 
-    new_dir = "./data-transform-" + timestamp +"/"
+    new_dir = "./transformed-data/run-" + timestamp +"/"
 
     print("Attempting to create results directory:" + new_dir)
 
     # make directory
     if not os.path.exists(new_dir):
         try:
-            os.mkdir(new_dir)
+            os.makedirs(new_dir)
             logging.debug("Created data results directory %s", new_dir)
         except:
             logging.error("Can't create destination directory %s", new_dir)
@@ -77,8 +88,9 @@ def raw_data_files_dict(raw_data_folders: list, data_directory: str) -> dict:
     key = string -> directory name
     value = list -> files in directory"""
     
+    # metrics for logs
     number_files_scanned = 0
-
+    
     print("Attempting to scan for files in raw-data directory")
 
     raw_data_dict = {}
@@ -156,7 +168,8 @@ def transform_data(raw_data_files: dict, results_directory: str,
 
     # gather neat info
     total_data_points = 0
-    number_transformed_data_files = 0
+    number_csvs_written = 0
+    number_merge_errors = 0
 
     print("Beginning data transforms on files in " + str(len(raw_data_files)) + " directories")
     # uncomment below and in imports for neat status bar
@@ -249,25 +262,25 @@ def transform_data(raw_data_files: dict, results_directory: str,
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call 915Mhz wind transform
-                    # df_dict["915_df"] = wind_profiler_915_transform.wind_profiler_915(file_name, event_times[date_key])
+                    df_dict["915_df"] = wind_profiler_915_transform.wind_profiler_915(file_name, event_times[date_key])
                 else:
                     logging.warning("%s is not a valid csv file. Ignoring", file_name)
             else:
                 logging.warning("%s is not a valid data file. Ignoring", file_name)
         
-        # Check if dataframe joiner has all 6 expected dataframes and merge
+        # Check if dataframe joiner has all 5 expected dataframes and merge
         if len(df_dict) == 5:
-            logging.debug("Have the expected 5 dataframes. Beginning merge")
-            print("Info on amps:")
-            logging.debug(df_dict["amps_df"].info(verbose=False))     
-            print("Info on fm:")
-            logging.debug(df_dict["fm_df"].info(verbose=False))       
-            print("Info on mcg:")
-            logging.debug(df_dict["mcg_df"].info(verbose=False))
-            print("Info on rain:")
-            logging.debug(df_dict["rain_df"].info(verbose=False))
-            print("Info on 50:")
-            logging.debug(df_dict["50_df"].info(verbose=False))
+            logging.debug("Have the expected 5 dataframes. Beginning merge for date %s", isodate)
+            logging.debug("Info on amps:")
+            logging.debug(df_dict["amps_df"])     
+            logging.debug("Info on fm:")
+            logging.debug(df_dict["fm_df"])       
+            logging.debug("Info on mcg:")
+            logging.debug(df_dict["mcg_df"])
+            logging.debug("Info on rain:")
+            logging.debug(df_dict["rain_df"])
+            logging.debug("Info on 50:")
+            logging.debug(df_dict["50_df"])
 
             # make an ordered list of dataframes to always join in the same sequence
             dataframes = [df_dict["amps_df"], df_dict["fm_df"], df_dict["mcg_df"], df_dict["rain_df"],
@@ -276,28 +289,40 @@ def transform_data(raw_data_files: dict, results_directory: str,
 
             # write to new csv in results folder
             merged_filename = results_directory + isodate + "-" + data_type + ".csv"
-            merged_data.to_csv(merged_filename)
+            merged_data.to_csv(merged_filename, na_rep="NaN")
+            number_csvs_written += 1
             logging.debug("Wrote merged data file to %s", merged_filename)
         else:
-            logging.debug("Insufficient dataframes for merge. Discarding")
-             
+            number_merge_errors += 1
+            logging.warning("Insufficient dataframes for merge. Discarding")
+
+    # print and log metrics
+    number_expected_merge_files = "{:,}".format(str(len(raw_data_files)))
     total_data_points = "{:,}".format(total_data_points)
     logging.debug("Loaded %s total data points", total_data_points)
     print("Successfully loaded " + total_data_points + " total data points")
+    number_csvs_written= "{:,}".format(number_csvs_written)
+    logging.debug("Wrote %s transformed data files, expected %s", total_data_points, number_expected_merge_files)
+    print("Successfully transformed " + number_csvs_written + " files, expected " + number_expected_merge_files)
+    number_merge_errors= "{:,}".format(number_merge_errors)
+    logging.debug("Had %s dataframe merge errors", number_merge_errors)
+    print("Had " + number_merge_errors + " files, expected " + number_expected_merge_files)
 
 # main program
+def main():
+    # directory for raw data files
+    data_directory = "./Scraped_Files/"
+    # directory for transformed data
+    results_directory = make_results_directory(timestamp)
+    # all folders with raw data
+    raw_data_folders = raw_data_directory_list(data_directory)
+    # all raw data files and the number of raw data files
+    raw_data_files, number_raw_data_files = raw_data_files_dict(raw_data_folders, data_directory)
+    # all launches and scrubs from given csv
+    event_times = make_events_dict("launches.csv")
+    # perform data transforms
+    transform_data(raw_data_files, results_directory, event_times, number_raw_data_files)
+    return
 
-# directory for raw data files
-data_directory = "./Scraped_Files/"
-
-results_directory = make_results_directory(timestamp)
-
-raw_data_folders = raw_data_directory_list(data_directory)
-
-raw_data_files, number_raw_data_files = raw_data_files_dict(raw_data_folders, data_directory)
-
-event_times = make_events_dict("launches.csv")
-
-transform_data(raw_data_files, results_directory, event_times, number_raw_data_files)
-
-# pass datetime object and file path string of launch/scrub zulu to transform
+if __name__ == '__main__':
+    main()
