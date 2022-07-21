@@ -1,4 +1,5 @@
 # This file reads all files in the raw-data directory and transforms them for use in our ML models
+# Uses multiprocessing to speed data transformations
 
 # import required packages
 import os
@@ -7,6 +8,7 @@ import time
 import logging
 import pandas as pd
 from tqdm import tqdm
+import multiprocessing
 
 # import other python files for data transform
 import merlin_transform
@@ -366,6 +368,10 @@ def transform_data(raw_data_files: dict, results_directory: str,
     number_merge_errors= "{:,}".format(number_merge_errors)
     logging.debug("Had %s dataframe merge errors", number_merge_errors)
     print("Had " + number_merge_errors + " dataframe merge errors")
+
+def parallel_data_processing():
+    # test
+    s = "temp"
 
 # main program
 def main():
