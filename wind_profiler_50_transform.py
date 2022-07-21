@@ -104,7 +104,7 @@ def wind_profiler_50(path,launchtime):
         interp_df=pd.DataFrame(index=time_list)
         interp_df[final_labels]=np.nan
       
-    if interp_df.isnull().sum().sum()) > 0:
+    if interp_df.isnull().sum().sum() > 0:
         logging.warning("NaN values present in processed wind_50 data")
     
     return interp_df
