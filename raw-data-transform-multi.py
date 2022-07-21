@@ -364,15 +364,16 @@ def transform_data(raw_data_files: dict, results_directory: str,
     logging.debug("Data transforms took %s", transform_time_string)
     print("Data transforms completed in " + transform_time_string)
     number_expected_merge_files = "{:,}".format(number_raw_data_files)
-    total_data_points = "{:,}".format(total_data_points)
-    logging.debug("Loaded %s total data points", total_data_points)
-    print("Successfully loaded " + total_data_points + " total data points")
+    total_data_points_string = "{:,}".format(total_data_points)
+    logging.debug("Loaded %s total data points", total_data_points_string)
+    print("Successfully loaded " + total_data_points_string + " total data points")
     number_csvs_written= "{:,}".format(number_csvs_written)
-    logging.debug("Wrote %s transformed data files, expected %s", total_data_points, number_expected_merge_files)
+    logging.debug("Wrote %s transformed data files, expected %s", number_csvs_written, number_expected_merge_files)
     print("Successfully transformed " + number_csvs_written + " files, expected " + number_expected_merge_files)
     number_merge_errors= "{:,}".format(number_merge_errors)
     logging.debug("Had %s dataframe merge errors", number_merge_errors)
     print("Had " + number_merge_errors + " dataframe merge errors")
+    return total_data_points
 
 def split_raw_data_dict(raw_data_files: dict) -> list:
     split = []
@@ -409,9 +410,10 @@ if __name__ == '__main__':
 
     print("split data:")
     print(split_raw_data)
+    total_data_points = 0
 
     with Pool(processes=8) as pool:
-        pool.starmap(transform_data, [(split_raw_data[0], results_directory, event_times, number_raw_data_files, 1),
+        total_data_points += pool.starmap(transform_data, [(split_raw_data[0], results_directory, event_times, number_raw_data_files, 1),
                                       (split_raw_data[1], results_directory, event_times, number_raw_data_files, 2),
                                       (split_raw_data[2], results_directory, event_times, number_raw_data_files, 3),
                                       (split_raw_data[3], results_directory, event_times, number_raw_data_files, 4),
@@ -420,4 +422,6 @@ if __name__ == '__main__':
                                       (split_raw_data[6], results_directory, event_times, number_raw_data_files, 7),
                                       (split_raw_data[7], results_directory, event_times, number_raw_data_files, 8)])
     print("Completed data transform")
+    print(total_data_points)
+    print("total data points")
 

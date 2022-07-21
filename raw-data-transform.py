@@ -357,15 +357,16 @@ def transform_data(raw_data_files: dict, results_directory: str,
     logging.debug("Data transforms took %s", transform_time_string)
     print("Data transforms completed in " + transform_time_string)
     number_expected_merge_files = "{:,}".format(number_raw_data_files)
-    total_data_points = "{:,}".format(total_data_points)
-    logging.debug("Loaded %s total data points", total_data_points)
-    print("Successfully loaded " + total_data_points + " total data points")
+    total_data_points_string = "{:,}".format(total_data_points)
+    logging.debug("Loaded %s total data points", total_data_points_string)
+    print("Successfully loaded " + total_data_points_string + " total data points")
     number_csvs_written= "{:,}".format(number_csvs_written)
     logging.debug("Wrote %s transformed data files, expected %s", number_csvs_written, number_expected_merge_files)
     print("Successfully transformed " + number_csvs_written + " files, expected " + number_expected_merge_files)
     number_merge_errors= "{:,}".format(number_merge_errors)
     logging.debug("Had %s dataframe merge errors", number_merge_errors)
     print("Had " + number_merge_errors + " dataframe merge errors")
+    return total_data_points
 
 # main program
 def main():
