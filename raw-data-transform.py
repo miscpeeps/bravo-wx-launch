@@ -5,12 +5,21 @@ import os
 import datetime
 import csv
 import logging
+from tabnanny import verbose
 import pandas as pd
-#from tqdm import tqdm
+from tqdm import tqdm
 
 # import other python files for data transform
 import merlin_transform
 import amps_low_transform
+import field_mill_transform
+import raingauge_transform
+import wind_profiler_50_transform
+import wind_profiler_915_transform
+
+# supress pandas warnings
+import warnings
+warnings.filterwarnings("ignore")
 
 # start logging
 timestamp = str(datetime.datetime.now())
@@ -149,13 +158,14 @@ def transform_data(raw_data_files: dict, results_directory: str,
     total_data_points = 0
     number_transformed_data_files = 0
 
-    # dict to hold transformed dataframes
-    df_dict = {}
-
     print("Beginning data transforms on files in " + str(len(raw_data_files)) + " directories")
     # uncomment below and in imports for neat status bar
-    # for key in tqdm(raw_data_files):
-    for key in raw_data_files:
+    for key in tqdm(raw_data_files):
+    #for key in raw_data_files:
+        
+        # initialize dataframe joiner for each new directory
+        df_dict = {}
+        
         # determine if data is from launch or scrub for later tagging
         if "launch" in key:
             data_type = "launch"
@@ -173,6 +183,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
         # construct date_key for event_times datetime objects
         date = key.split("/")
         date = date[-2].split("-")
+        isodate = date[0]
         date = date[0]
         # build MM/DD/YYYY string
         date = date[4:6] + "/" + date[6:] + "/" + date[:4]
@@ -203,43 +214,73 @@ def transform_data(raw_data_files: dict, results_directory: str,
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call amps low transform
                     df_dict["amps_df"] = amps_low_transform.lowamps(file_name, event_times[date_key])
-                    print(type(df_dict["amps_df"]))
                 elif "Field" in file_name:
                     logging.debug("Applying transform to field mill (lplws) file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call lplws field mill transform
+                    df_dict["fm_df"] = field_mill_transform.field_mill(file_name, event_times[date_key])
                 elif "Merlin" in file_name:
                     logging.debug("Applying transform to merlin c-g file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call merlin c-g transform
+                    df_dict["mcg_df"] = merlin_transform.cg(file_name, event_times[date_key])
                 elif "Rainfall" in file_name:
                     logging.debug("Applying transform to rainfall file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call rainfall transform
+                    df_dict["rain_df"] = raingauge_transform.rainfall(file_name, event_times[date_key])
                 elif "Tower" in file_name:
                     logging.debug("Applying transform to weather tower file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call weather tower transform
+                    # df_dict["wt_df"] = raingauge_transform.rainfall(file_name, event_times[date_key])
                 elif "Profiler50" in file_name:
                     logging.debug("Applying transform to 50MHz wind file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call 50Mhz wind transform
+                    df_dict["50_df"] = wind_profiler_50_transform.wind_profiler_50(file_name, event_times[date_key])
                 elif "Profiler915" in file_name:
                     logging.debug("Applying transform to 915MHz wind file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call 915Mhz wind transform
+                    # df_dict["915_df"] = wind_profiler_915_transform.wind_profiler_915(file_name, event_times[date_key])
                 else:
                     logging.warning("%s is not a valid csv file. Ignoring", file_name)
             else:
                 logging.warning("%s is not a valid data file. Ignoring", file_name)
-        # status update
-    
+        
+        # Check if dataframe joiner has all 6 expected dataframes and merge
+        if len(df_dict) == 5:
+            logging.debug("Have the expected 5 dataframes. Beginning merge")
+            print("Info on amps:")
+            logging.debug(df_dict["amps_df"].info(verbose=False))     
+            print("Info on fm:")
+            logging.debug(df_dict["fm_df"].info(verbose=False))       
+            print("Info on mcg:")
+            logging.debug(df_dict["mcg_df"].info(verbose=False))
+            print("Info on rain:")
+            logging.debug(df_dict["rain_df"].info(verbose=False))
+            print("Info on 50:")
+            logging.debug(df_dict["50_df"].info(verbose=False))
+
+            # make an ordered list of dataframes to always join in the same sequence
+            dataframes = [df_dict["amps_df"], df_dict["fm_df"], df_dict["mcg_df"], df_dict["rain_df"],
+                          df_dict["50_df"]]
+            merged_data = dataframes[0].join(dataframes[1:])
+
+            # write to new csv in results folder
+            merged_filename = results_directory + isodate + "-" + data_type + ".csv"
+            merged_data.to_csv(merged_filename)
+            logging.debug("Wrote merged data file to %s", merged_filename)
+        else:
+            logging.debug("Insufficient dataframes for merge. Discarding")
+             
     total_data_points = "{:,}".format(total_data_points)
     logging.debug("Loaded %s total data points", total_data_points)
     print("Successfully loaded " + total_data_points + " total data points")
