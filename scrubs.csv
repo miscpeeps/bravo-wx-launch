@@ -1,30 +1,30 @@
 ,Rocket_Type,Date of Scrub,Reason for Scrub,Time of Scrub (Z)
-0,United Launch Alliance Atlas 5 rocket,06/30/2022,Stormy weather,23:30
-1,SpaceX Falcon 9 rocket,01/27/2022,poor weather,23:11
-2,SpaceX Falcon 9 rocket,01/28/2022,poor weather,22:16
+0,United Launch Alliance Atlas 5 rocket,6/30/2022,Stormy weather,23:30
+1,SpaceX Falcon 9 rocket,1/27/2022,poor weather,23:11
+2,SpaceX Falcon 9 rocket,1/28/2022,poor weather,22:16
 3,SpaceX Falcon 9 rocket,11/12/2021,bad weather,12:41
-4,SpaceX Falcon 9 rocket ,08/28/2021,bad weather,07:37
-5,SpaceX Falcon 9 rocket ,01/23/2021,due to weather,13:37
+4,SpaceX Falcon 9 rocket ,8/28/2021,bad weather,07:37
+5,SpaceX Falcon 9 rocket ,1/23/2021,due to weather,13:37
 6,United Launch Alliance Delta 4-Heavy rocket,09/28/2020,weather,04:02
-7,SpaceX Falcon 9 rocket ,09/28/2020,poor weather,14:22
+7,SpaceX Falcon 9 rocket ,9/28/2020,poor weather,14:22
 8,SpaceX Falcon 9 rocket ,10/05/2020,bad weather,11:51
-9,SpaceX Falcon 9 rocket,05/27/2020,bad weather,20:17
-10,United Launch Alliance Atlas 5 rocket,05/16/2020,high ground winds,17:42
-11,SpaceX Falcon 9 rocket,01/27/2020,upper level winds,14:49
+9,SpaceX Falcon 9 rocket,5/27/2020,bad weather,20:17
+10,United Launch Alliance Atlas 5 rocket,5/16/2020,high ground winds,17:42
+11,SpaceX Falcon 9 rocket,1/27/2020,upper level winds,14:49
 12,SpaceX Falcon 9 rocket,12/04/2019,unfavorable upper level winds.,17:51
-13,A SpaceX Falcon 9 rocket,05/16/2019,poor weather.,02:45
-14,A SpaceX Falcon 9 rocket,05/17/2019,poor weather.,00:30
+13,A SpaceX Falcon 9 rocket,5/16/2019,poor weather.,02:45
+14,A SpaceX Falcon 9 rocket,5/17/2019,poor weather.,00:30
 15,A SpaceX Falcon 9 rocket,12/20/2018,poor weather,13:31
 16,A SpaceX Falcon 9 rocket,12/22/2018,upper level winds,14:21
 17,A United Launce Alliance Atlas 5,10/05/2017,bad weather,07:14
 18,A United Launce Alliance Atlas 5,10/06/2017,bad weather,08:03
-19,A SpaceX Falcon 9 rocket,06/01/2017,lightning,21:30
-20,A SpaceX Falcon 9 rocket,03/12/2017,rain shower and gloomy ,05:55
-21,A ULA Delta IV Heavy,06/09/2016,poor weather,22:00
-22,A SpaceX Falcon 9 rocket,02/24/2016,poor weather,23:15
-23,A SpaceX Falcon 9 rocket,03/02/2016,wind shear,00:21
+19,A SpaceX Falcon 9 rocket,6/01/2017,lightning,21:30
+20,A SpaceX Falcon 9 rocket,3/12/2017,rain shower and gloomy ,05:55
+21,A ULA Delta IV Heavy,6/09/2016,poor weather,22:00
+22,A SpaceX Falcon 9 rocket,2/24/2016,poor weather,23:15
+23,A SpaceX Falcon 9 rocket,3/02/2016,wind shear,00:21
 24,A United Launce Alliance Atlas 5,12/03/2015,"rain, wind",23:11
 25,A United Launce Alliance Atlas 5,12/04/2015,rain,23:14
 26,A United Launce Alliance Atlas 5,12/05/2015,weather,18:51
-27,A SpaceX Falcon 9,04/13/2105,storms,23:30
-28,A SpaceX Falcon 8,02/10/2015,high altitude winds,23:03
+27,A SpaceX Falcon 9,4/13/2105,storms,23:30
+28,A SpaceX Falcon 8,2/10/2015,high altitude winds,23:03
