@@ -181,7 +181,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
             # fix leading 0 in day
             date = date[0:3] + date[4:]
             logging.debug("Fixed day: %s", date)
-        if "0" in date[0:2]:
+        if "0" in date[0:1]:
             # fix leading 0 in month
             date = date[1:]
             logging.debug("Fixed month: %s", date)
