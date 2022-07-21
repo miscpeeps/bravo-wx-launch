@@ -199,7 +199,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
     number_raw_data_files = 0
     for key in raw_data_files:
         number_raw_data_files += len(raw_data_files[key])
-    
+    worker_file_count = 0
 
     print("Worker " + str(worker_number) + " beginning data transforms on " + str(number_raw_data_files) + " files in " + str(len(raw_data_files)) + " directories")
     # uncomment below and in imports for neat status bar
@@ -306,7 +306,8 @@ def transform_data(raw_data_files: dict, results_directory: str,
                     logging.warning("%s is not a valid csv file. Ignoring", file_name)
             else:
                 logging.warning("%s is not a valid data file. Ignoring", file_name)
-            
+            worker_file_count += 1
+        print("Worker " + str(worker_number) + " processed " + str(worker_file_count) + " of " + str(number_raw_data_files) + " files")
 
         # Check if dataframe joiner has all 7 expected dataframes and merge
         if len(df_dict) == 7:
@@ -377,10 +378,18 @@ def split_raw_data_dict(raw_data_files: dict) -> list:
     split = []
     s1 = dict(list(raw_data_files.items())[len(raw_data_files)//2:])
     s2 = dict(list(raw_data_files.items())[:len(raw_data_files)//2])
-    split.append(dict(list(s1.items())[len(s1)//2:]))
-    split.append(dict(list(s1.items())[:len(s1)//2]))
-    split.append(dict(list(s2.items())[len(s2)//2:]))
-    split.append(dict(list(s2.items())[:len(s2)//2]))
+    s1_1 = dict(list(s1.items())[len(s1)//2:])
+    s1_2 = dict(list(s1.items())[:len(s1)//2])
+    s2_1 = dict(list(s2.items())[len(s2)//2:])
+    s2_2 = dict(list(s2.items())[:len(s2)//2])
+    split.append(dict(list(s1_1.items())[len(s1_1)//2:]))
+    split.append(dict(list(s1_1.items())[:len(s1_1)//2]))
+    split.append(dict(list(s1_2.items())[len(s1_2)//2:]))
+    split.append(dict(list(s1_2.items())[:len(s1_2)//2]))
+    split.append(dict(list(s2_1.items())[len(s2_1)//2:]))
+    split.append(dict(list(s2_1.items())[:len(s2_1)//2]))
+    split.append(dict(list(s2_2.items())[len(s2_2)//2:]))
+    split.append(dict(list(s2_2.items())[:len(s2_2)//2]))
     return split
 
 # main program
@@ -398,29 +407,17 @@ if __name__ == '__main__':
     # split raw_data_files into multiple dictionaries for multiprocessing
     split_raw_data = split_raw_data_dict(raw_data_files)
 
-    with Pool(processes=4) as pool:
-        pool.starmap(transform_data, [(split_raw_data[0], results_directory, event_times, number_raw_data_files, 0),
-                                      (split_raw_data[1], results_directory, event_times, number_raw_data_files, 1),
-                                      (split_raw_data[2], results_directory, event_times, number_raw_data_files, 2),
-                                      (split_raw_data[3], results_directory, event_times, number_raw_data_files, 3)])
+    print("split data:")
+    print(split_raw_data)
 
-    """ 
-    p1 = Process(target=transform_data, args=(split_raw_data[0], results_directory, event_times, number_raw_data_files, ))
-    p1.start()
-
-    p2 = Process(target=transform_data, args=(split_raw_data[1], results_directory, event_times, number_raw_data_files, ))
-    p2.start()
-
-    p3 = Process(target=transform_data, args=(split_raw_data[2], results_directory, event_times, number_raw_data_files, ))
-    p3.start()
-
-    p4 = Process(target=transform_data, args=(split_raw_data[3], results_directory, event_times, number_raw_data_files, ))
-    p4.start()
-
-    p1.join()
-    p2.join()
-    p3.join()
-    p4.join()
-    print("finished main")
-    """
+    with Pool(processes=8) as pool:
+        pool.starmap(transform_data, [(split_raw_data[0], results_directory, event_times, number_raw_data_files, 1),
+                                      (split_raw_data[1], results_directory, event_times, number_raw_data_files, 2),
+                                      (split_raw_data[2], results_directory, event_times, number_raw_data_files, 3),
+                                      (split_raw_data[3], results_directory, event_times, number_raw_data_files, 4),
+                                      (split_raw_data[4], results_directory, event_times, number_raw_data_files, 5),
+                                      (split_raw_data[5], results_directory, event_times, number_raw_data_files, 6),
+                                      (split_raw_data[6], results_directory, event_times, number_raw_data_files, 7),
+                                      (split_raw_data[7], results_directory, event_times, number_raw_data_files, 8)])
+    print("Completed data transform")
 
