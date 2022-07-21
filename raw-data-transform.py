@@ -24,6 +24,17 @@ warnings.filterwarnings("ignore")
 # start logging
 timestamp = str(datetime.datetime.now())
 
+# make logs directory
+if not os.path.exists("./logs/"):
+    try:
+        os.makedirs("./logs/")
+        logging.debug("Created logging directory")
+    except:
+        logging.error("Can't create logging directory")
+        raise OSError("Can't create logging directory") 
+    else:
+        logging.debug("Logging directory already exists")       
+
 # remove characters from timestamp
 timestamp_char_remove = {":", "-", " ", "."}
 for char in timestamp_char_remove:
@@ -45,7 +56,7 @@ def make_results_directory(timestamp: str) -> str:
     # make directory
     if not os.path.exists(new_dir):
         try:
-            os.mkdir(new_dir)
+            os.makedirs(new_dir)
             logging.debug("Created data results directory %s", new_dir)
         except:
             logging.error("Can't create destination directory %s", new_dir)
@@ -257,17 +268,17 @@ def transform_data(raw_data_files: dict, results_directory: str,
         
         # Check if dataframe joiner has all 5 expected dataframes and merge
         if len(df_dict) == 5:
-            logging.debug("Have the expected 5 dataframes. Beginning merge")
+            logging.debug("Have the expected 5 dataframes. Beginning merge for date %s", isodate)
             print("Info on amps:")
-            logging.debug(df_dict["amps_df"].info(verbose=False))     
+            logging.debug(df_dict["amps_df"])     
             print("Info on fm:")
-            logging.debug(df_dict["fm_df"].info(verbose=False))       
+            logging.debug(df_dict["fm_df"])       
             print("Info on mcg:")
-            logging.debug(df_dict["mcg_df"].info(verbose=False))
+            logging.debug(df_dict["mcg_df"])
             print("Info on rain:")
-            logging.debug(df_dict["rain_df"].info(verbose=False))
+            logging.debug(df_dict["rain_df"])
             print("Info on 50:")
-            logging.debug(df_dict["50_df"].info(verbose=False))
+            logging.debug(df_dict["50_df"])
 
             # make an ordered list of dataframes to always join in the same sequence
             dataframes = [df_dict["amps_df"], df_dict["fm_df"], df_dict["mcg_df"], df_dict["rain_df"],
