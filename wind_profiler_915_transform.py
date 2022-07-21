@@ -42,13 +42,13 @@ def wind_profiler_915(path, launchtime):
     profilers = wp_915_df['Profiler'].unique()
     # create the output dataframe from the time_list
     output_df = pd.DataFrame(index=time_list)
-    dummy_data = np.ones(49) * 9999
+    dummy_data = np.ones(49) * np.nan
 
     ##iterate through each profiler
     for profiler in profilers:
-
-        # latest_speed=pd.DataFrame(index=time_list,data=dummy_data)
-        # latest_dir=pd.DataFrame(index=time_list,data=dummy_data)
+        sensor_df=pd.DataFrame(index=time_list)
+        latest_speed=pd.DataFrame(index=time_list,data=dummy_data)
+        latest_dir=pd.DataFrame(index=time_list,data=dummy_data)
         # create dataframe for each profiler, organized by datetime
         profiler_df = wp_915_df.loc[wp_915_df['Profiler'] == profiler].copy()
         profiler_df.sort_values(by=['Height', 'datetime'], inplace=True)
@@ -93,7 +93,9 @@ def wind_profiler_915(path, launchtime):
             df = pd.concat([speed_df, dir_df], axis=1)
             df.rename(columns={"Speed": f'{profiler} {bin_name} km Speed (m/s)',
                                "Direction Variance": f'{profiler} {bin_name} km Direction (var)'}, inplace=True)
-            output_df = output_df.merge(df, left_index=True, right_index=True)
+            sensor_df = sensor_df.merge(df, left_index=True, right_index=True)
+
+        output_df=output_df.merge(sensor_df,left_index=True,right_index=True)
 
     # interpolate between missing times
     missing_times = list(set(time_list) - set(output_df.index.to_list()))
@@ -101,5 +103,42 @@ def wind_profiler_915(path, launchtime):
     interp_df = pd.concat([output_df, data_interp])
     interp_df.sort_index(inplace=True)
     interp_df.interpolate(inplace=True)
+    interp_df.fillna(method='bfill',inplace=True)
+
+     #check to make sure we've got all of the right labels
+    final_labels=['RWP0004 Max Height: 0.8  km Speed (m/s)',
+       'RWP0004 Max Height: 0.8  km Direction (var)',
+       'RWP0004 Max Height: 1.5  km Speed (m/s)',
+       'RWP0004 Max Height: 1.5  km Direction (var)',
+       'RWP0004 Max Height: 10  km Speed (m/s)',
+       'RWP0004 Max Height: 10  km Direction (var)',
+       'RWP0005 Max Height: 0.8  km Speed (m/s)',
+       'RWP0005 Max Height: 0.8  km Direction (var)',
+       'RWP0005 Max Height: 1.5  km Speed (m/s)',
+       'RWP0005 Max Height: 1.5  km Direction (var)',
+       'RWP0005 Max Height: 10  km Speed (m/s)',
+       'RWP0005 Max Height: 10  km Direction (var)',
+       'RWP0001 Max Height: 0.8  km Speed (m/s)',
+       'RWP0001 Max Height: 0.8  km Direction (var)',
+       'RWP0001 Max Height: 1.5  km Speed (m/s)',
+       'RWP0001 Max Height: 1.5  km Direction (var)',
+       'RWP0001 Max Height: 10  km Speed (m/s)',
+       'RWP0001 Max Height: 10  km Direction (var)',
+       'RWP0002 Max Height: 0.8  km Speed (m/s)',
+       'RWP0002 Max Height: 0.8  km Direction (var)',
+       'RWP0002 Max Height: 1.5  km Speed (m/s)',
+       'RWP0002 Max Height: 1.5  km Direction (var)',
+       'RWP0002 Max Height: 10  km Speed (m/s)',
+       'RWP0002 Max Height: 10  km Direction (var)',
+       'RWP0003 Max Height: 0.8  km Speed (m/s)',
+       'RWP0003 Max Height: 0.8  km Direction (var)',
+       'RWP0003 Max Height: 1.5  km Speed (m/s)',
+       'RWP0003 Max Height: 1.5  km Direction (var)',
+       'RWP0003 Max Height: 10  km Speed (m/s)',
+       'RWP0003 Max Height: 10  km Direction (var)']
+    
+    missing_labels=missing_times=list(set(final_labels)-set(interp_df.columns))
+    if len(missing_labels)>0: 
+        interp_df[missing_labels]=np.nan
 
     return interp_df
