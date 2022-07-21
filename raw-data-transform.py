@@ -3,7 +3,7 @@
 # import required packages
 import os
 import datetime
-import csv
+import time
 import logging
 from tabnanny import verbose
 import pandas as pd
@@ -174,7 +174,9 @@ def transform_data(raw_data_files: dict, results_directory: str,
     print("Beginning data transforms on " + str(number_raw_data_files) + " files in " + str(len(raw_data_files)) + " directories")
     # uncomment below and in imports for neat status bar
     pbar = tqdm(total=number_raw_data_files)
-    
+    transform_start_time = time.time()
+    logging.debug("Started data transforms at %s", str(transform_start_time))
+    """
     for key in raw_data_files:
         
         # initialize dataframe joiner for each new directory
@@ -290,7 +292,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
             dataframes = [df_dict["amps_df"], df_dict["fm_df"], df_dict["mcg_df"], df_dict["rain_df"],
                           df_dict["50_df"]]
             merged_data = dataframes[0].join(dataframes[1:])
-            logging.debug("Merged dataframe")
+            logging.debug("Successfully merged dataframe %s", isodate)
             logging.debug(merged_data)
 
             # write to new csv in results folder
@@ -304,12 +306,19 @@ def transform_data(raw_data_files: dict, results_directory: str,
                        + str(number_merge_errors) + " merge errors so far this run")
             logging.warning("Insufficient dataframes for merge for date %s. %s merge errors so far this run",
                             isodate, str(number_merge_errors))
-
+    """
     # close progress bar
     pbar.close()
+    transform_stop_time = time.time()
+    logging.debug("Completed data transforms at %s", str(transform_start_time))
 
     # print and log metrics
-    number_expected_merge_files = "{:,}".format(raw_data_files)
+    transform_seconds = transform_stop_time - transform_start_time
+    transform_time = time.gmtime(transform_seconds)
+    transform_time_string = time.strftime("%H:%M:%S",transform_time)
+    logging.debug("Data transforms took %s", transform_time_string)
+    print("Data transforms completed in " + transform_time_string)
+    number_expected_merge_files = "{:,}".format(number_raw_data_files)
     total_data_points = "{:,}".format(total_data_points)
     logging.debug("Loaded %s total data points", total_data_points)
     print("Successfully loaded " + total_data_points + " total data points")
@@ -318,7 +327,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
     print("Successfully transformed " + number_csvs_written + " files, expected " + number_expected_merge_files)
     number_merge_errors= "{:,}".format(number_merge_errors)
     logging.debug("Had %s dataframe merge errors", number_merge_errors)
-    print("Had " + number_merge_errors + " files, expected " + number_expected_merge_files)
+    print("Had " + number_merge_errors + " dataframe merge errors")
 
 # main program
 def main():
