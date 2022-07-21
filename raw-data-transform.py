@@ -88,8 +88,9 @@ def raw_data_files_dict(raw_data_folders: list, data_directory: str) -> dict:
     key = string -> directory name
     value = list -> files in directory"""
     
+    # metrics for logs
     number_files_scanned = 0
-
+    
     print("Attempting to scan for files in raw-data directory")
 
     raw_data_dict = {}
@@ -167,7 +168,8 @@ def transform_data(raw_data_files: dict, results_directory: str,
 
     # gather neat info
     total_data_points = 0
-    number_transformed_data_files = 0
+    number_csvs_written = 0
+    number_merge_errors = 0
 
     print("Beginning data transforms on files in " + str(len(raw_data_files)) + " directories")
     # uncomment below and in imports for neat status bar
@@ -260,7 +262,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call 915Mhz wind transform
-                    # df_dict["915_df"] = wind_profiler_915_transform.wind_profiler_915(file_name, event_times[date_key])
+                    df_dict["915_df"] = wind_profiler_915_transform.wind_profiler_915(file_name, event_times[date_key])
                 else:
                     logging.warning("%s is not a valid csv file. Ignoring", file_name)
             else:
@@ -288,13 +290,23 @@ def transform_data(raw_data_files: dict, results_directory: str,
             # write to new csv in results folder
             merged_filename = results_directory + isodate + "-" + data_type + ".csv"
             merged_data.to_csv(merged_filename, na_rep="NaN")
+            number_csvs_written += 1
             logging.debug("Wrote merged data file to %s", merged_filename)
         else:
+            number_merge_errors += 1
             logging.warning("Insufficient dataframes for merge. Discarding")
-             
+
+    # print and log metrics
+    number_expected_merge_files = "{:,}".format(str(len(raw_data_files)))
     total_data_points = "{:,}".format(total_data_points)
     logging.debug("Loaded %s total data points", total_data_points)
     print("Successfully loaded " + total_data_points + " total data points")
+    number_csvs_written= "{:,}".format(number_csvs_written)
+    logging.debug("Wrote %s transformed data files, expected %s", total_data_points, number_expected_merge_files)
+    print("Successfully transformed " + number_csvs_written + " files, expected " + number_expected_merge_files)
+    number_merge_errors= "{:,}".format(number_merge_errors)
+    logging.debug("Had %s dataframe merge errors", number_merge_errors)
+    print("Had " + number_merge_errors + " files, expected " + number_expected_merge_files)
 
 # main program
 def main():
