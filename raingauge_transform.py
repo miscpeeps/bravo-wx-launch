@@ -35,7 +35,8 @@ def rainfall(path, launchtime):
         groupby.drop(columns='NULL', inplace=True)
         
     except:
-        groupby=pd.DataFrame(columns=['Sum of Lightning Strike Signals','Count of Lightning Strikes'], index=pd.date_range(launchtime - datetime.timedelta(hours=4), launchtime,freq='5T'))
+        print("error populating rain gauge data")
+        groupby=pd.DataFrame(columns=['Rain Gauge Inches'], index=pd.date_range(launchtime - datetime.timedelta(hours=4), launchtime,freq='5T'))
     groupby = groupby.fillna(0)
     
     
