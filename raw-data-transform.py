@@ -174,6 +174,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
     print("Beginning data transforms on " + str(number_raw_data_files) + " files in " + str(len(raw_data_files)) + " directories")
     # uncomment below and in imports for neat status bar
     pbar = tqdm(total=number_raw_data_files)
+    
     for key in raw_data_files:
         
         # initialize dataframe joiner for each new directory
@@ -218,7 +219,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
             logging.debug("Opening raw data file %s", file_name)
             # Get file extension for checking and path for passing correct datetime object to transformers
             path, ext = os.path.splitext(file_name)
-
+            pbar.update(1)
             # switch case based on what kind of data file
             if ext == ".csv":
                 if "Amps" in file_name:
@@ -262,12 +263,12 @@ def transform_data(raw_data_files: dict, results_directory: str,
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call 915Mhz wind transform
-                    # df_dict["915_df"] = wind_profiler_915_transform.wind_profiler_915(file_name, event_times[date_key])
+                    df_dict["915_df"] = wind_profiler_915_transform.wind_profiler_915(file_name, event_times[date_key])
                 else:
                     logging.warning("%s is not a valid csv file. Ignoring", file_name)
             else:
                 logging.warning("%s is not a valid data file. Ignoring", file_name)
-            pbar.update(1)
+            
 
         # Check if dataframe joiner has all 5 expected dataframes and merge
         if len(df_dict) == 5:
@@ -282,8 +283,8 @@ def transform_data(raw_data_files: dict, results_directory: str,
             logging.debug(df_dict["rain_df"])
             logging.debug("Info on 50 MHz:")
             logging.debug(df_dict["50_df"])
-            #logging.debug("Info on 915 MHz:")
-            #logging.debug(df_dict["915_df"])
+            logging.debug("Info on 915 MHz:")
+            logging.debug(df_dict["915_df"])
 
             # make an ordered list of dataframes to always join in the same sequence
             dataframes = [df_dict["amps_df"], df_dict["fm_df"], df_dict["mcg_df"], df_dict["rain_df"],
@@ -303,7 +304,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
     pbar.close()
 
     # print and log metrics
-    number_expected_merge_files = "{:,}".format(str(len(raw_data_files)))
+    number_expected_merge_files = "{:,}".format(raw_data_files)
     total_data_points = "{:,}".format(total_data_points)
     logging.debug("Loaded %s total data points", total_data_points)
     print("Successfully loaded " + total_data_points + " total data points")
