@@ -35,7 +35,7 @@ def field_mill(path, launchtime):
         groupby = groupby.fillna(groupby['Field Mill Mean'].mean())
         
     except:
-        print("error populating rain gauge data")
+        print("error populating field mill data")
         groupby=pd.DataFrame(columns=['Field Mill Mean'], index=pd.date_range(launchtime - datetime.timedelta(hours=4), launchtime,freq='5T'))
 
         
