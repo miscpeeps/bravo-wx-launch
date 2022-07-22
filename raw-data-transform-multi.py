@@ -363,17 +363,13 @@ def transform_data(raw_data_files: dict, results_directory: str,
     transform_time_string = time.strftime("%H:%M:%S",transform_time)
     logging.debug("Data transforms took %s", transform_time_string)
     print("Data transforms completed in " + transform_time_string)
-    number_expected_merge_files = "{:,}".format(len(raw_data_files))
-    total_data_points_string = "{:,}".format(total_data_points)
-    logging.debug("Loaded %s total data points", total_data_points_string)
-    print("Successfully loaded " + total_data_points_string + " total data points")
-    number_csvs_written= "{:,}".format(number_csvs_written)
-    logging.debug("Wrote %s transformed data files, expected %s", number_csvs_written, number_expected_merge_files)
-    print("Successfully transformed " + number_csvs_written + " files, expected " + number_expected_merge_files)
-    number_merge_errors= "{:,}".format(number_merge_errors)
-    logging.debug("Had %s dataframe merge errors", number_merge_errors)
-    print("Had " + number_merge_errors + " dataframe merge errors")
-    return total_data_points
+    logging.debug("Loaded %s total data points", "{:,}".format(total_data_points))
+    print("Successfully loaded " + "{:,}".format(total_data_points) + " total data points")
+    logging.debug("Wrote %s transformed data files, expected %s", "{:,}".format(number_csvs_written), "{:,}".format(len(raw_data_files)))
+    print("Successfully transformed " + "{:,}".format(number_csvs_written) + " files, expected " + "{:,}".format(len(raw_data_files)))
+    logging.debug("Had %s dataframe merge errors", "{:,}".format(number_merge_errors))
+    print("Had " + "{:,}".format(number_merge_errors) + " dataframe merge errors")
+    return total_data_points, worker_number, transform_seconds, worker_file_count, len(raw_data_files), number_csvs_written, number_merge_errors
 
 def split_raw_data_dict(raw_data_files: dict) -> list:
     split = []
@@ -393,6 +389,53 @@ def split_raw_data_dict(raw_data_files: dict) -> list:
     split.append(dict(list(s2_2.items())[:len(s2_2)//2]))
     return split
 
+def metrics(total_data_points: list) -> None:
+    """Performs metrics across multiple data transform process workers.
+
+    total_data_points data structure is a list of tuples in the following order (per worker):
+    total_data_points, 
+    worker_number, 
+    transform_seconds, 
+    worker_file_count, 
+    number_csvs_expected, 
+    number_csvs_written, 
+    number_merge_errors
+    """
+
+    # sums
+    sum_total_data_points = 0
+    sum_transform_seconds = 0
+    sum_worker_file_count = 0
+    sum_number_csvs_expected = 0
+    sum_number_csvs_written = 0
+    sum_number_merge_errors = 0
+
+    for index, value in enumerate(total_data_points):
+        sum_total_data_points += total_data_points[index][0]
+        sum_transform_seconds += total_data_points[index][2]
+        sum_worker_file_count += total_data_points[index][3]
+        sum_number_csvs_expected += total_data_points[index][4]
+        sum_number_csvs_written += total_data_points[index][5]
+        sum_number_merge_errors += total_data_points[index][6]
+        print(f"Worker {total_data_points[index][1]} processed {total_data_points[index][3]} files and "
+              f"{total_data_points[index][0]} data points into {total_data_points[index][5]} csv files "
+              f"(expected {total_data_points[index][4]} csv files) with {total_data_points[index][6]} "
+              f"merge processing errors in {total_data_points[index][2]} seconds")
+    
+    average_transform_seconds = sum_transform_seconds / len(total_data_points)
+    average_transform_time = time.gmtime(average_transform_seconds)
+    transform_time_string = time.strftime("%H:%M:%S",average_transform_time)
+
+    sum_worker_file_count = "{:,}".format(sum_worker_file_count)
+    sum_total_data_points = "{:,}".format(sum_total_data_points)
+    sum_number_csvs_written = "{:,}".format(sum_number_csvs_written)
+    sum_number_csvs_expected = "{:,}".format(sum_number_csvs_expected)
+    sum_number_merge_errors = "{:,}".format(sum_number_merge_errors)
+    
+    print(f"8 workers processed {sum_worker_file_count} files and {sum_total_data_points} data points "
+          f"into {sum_number_csvs_written} csv files (expected {sum_number_csvs_expected} csv files) "
+          f"with {sum_number_merge_errors} merge processing errors in an average of {transform_time_string}")
+        
 # main program
 if __name__ == '__main__':
     # directory for raw data files
@@ -407,14 +450,14 @@ if __name__ == '__main__':
     event_times = make_events_dict(launch_list_file_path="launches.csv", scrub_list_file_path="scrubs.csv")
     # split raw_data_files into multiple dictionaries for multiprocessing
     split_raw_data = split_raw_data_dict(raw_data_files)
-
+    
+    """ debug only
     print("split data:")
     for index, item in enumerate(split_raw_data):
         print(index+1)
         print(split_raw_data[index])
         print("/n")
-  
-    total_data_points = 0
+    """
 
     with Pool(processes=8) as pool:
         total_data_points = pool.starmap(transform_data,
@@ -426,7 +469,5 @@ if __name__ == '__main__':
                                          (split_raw_data[5], results_directory, event_times, number_raw_data_files, 6),
                                          (split_raw_data[6], results_directory, event_times, number_raw_data_files, 7),
                                          (split_raw_data[7], results_directory, event_times, number_raw_data_files, 8)])
-    print("Completed data transform")
-    print(total_data_points)
-    print("total data points")
+    metrics(total_data_points)
 
