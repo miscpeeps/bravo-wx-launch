@@ -363,7 +363,7 @@ def transform_data(raw_data_files: dict, results_directory: str,
     transform_time_string = time.strftime("%H:%M:%S",transform_time)
     logging.debug("Data transforms took %s", transform_time_string)
     print("Data transforms completed in " + transform_time_string)
-    number_expected_merge_files = "{:,}".format(number_raw_data_files)
+    number_expected_merge_files = "{:,}".format(len(raw_data_files))
     total_data_points_string = "{:,}".format(total_data_points)
     logging.debug("Loaded %s total data points", total_data_points_string)
     print("Successfully loaded " + total_data_points_string + " total data points")
@@ -410,7 +410,7 @@ if __name__ == '__main__':
 
     print("split data:")
     for index, item in enumerate(split_raw_data):
-        print(index)
+        print(index+1)
         print(split_raw_data[index])
         print("/n")
   
