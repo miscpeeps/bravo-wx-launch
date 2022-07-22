@@ -417,14 +417,15 @@ if __name__ == '__main__':
     total_data_points = 0
 
     with Pool(processes=8) as pool:
-        total_data_points += pool.starmap(transform_data, [(split_raw_data[0], results_directory, event_times, number_raw_data_files, 1),
-                                      (split_raw_data[1], results_directory, event_times, number_raw_data_files, 2),
-                                      (split_raw_data[2], results_directory, event_times, number_raw_data_files, 3),
-                                      (split_raw_data[3], results_directory, event_times, number_raw_data_files, 4),
-                                      (split_raw_data[4], results_directory, event_times, number_raw_data_files, 5),
-                                      (split_raw_data[5], results_directory, event_times, number_raw_data_files, 6),
-                                      (split_raw_data[6], results_directory, event_times, number_raw_data_files, 7),
-                                      (split_raw_data[7], results_directory, event_times, number_raw_data_files, 8)])
+        total_data_points += pool.starmap(transform_data,
+                                        [(split_raw_data[0], results_directory, event_times, number_raw_data_files, 1),
+                                         (split_raw_data[1], results_directory, event_times, number_raw_data_files, 2),
+                                         (split_raw_data[2], results_directory, event_times, number_raw_data_files, 3),
+                                         (split_raw_data[3], results_directory, event_times, number_raw_data_files, 4),
+                                         (split_raw_data[4], results_directory, event_times, number_raw_data_files, 5),
+                                         (split_raw_data[5], results_directory, event_times, number_raw_data_files, 6),
+                                         (split_raw_data[6], results_directory, event_times, number_raw_data_files, 7),
+                                         (split_raw_data[7], results_directory, event_times, number_raw_data_files, 8)])
     print("Completed data transform")
     print(total_data_points)
     print("total data points")
