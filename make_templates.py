@@ -48,6 +48,8 @@ def raw_data_files_dict(raw_data_folders: list, data_directory: str) -> dict:
             missing_files = list(set(filenames) - set(files_list))
             print(missing_files)
             copy_files(path,missing_files)
+        elif len(files_list) > 7:
+            print(f'More than 7 files at {path}')
         raw_data_dict[path] = files_list
 
     print("Successfully scanned raw-data files, found " + str(number_files_scanned) + " files")
