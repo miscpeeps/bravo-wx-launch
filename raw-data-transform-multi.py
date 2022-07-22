@@ -417,7 +417,7 @@ if __name__ == '__main__':
     total_data_points = 0
 
     with Pool(processes=8) as pool:
-        total_data_points += pool.starmap(transform_data,
+        total_data_points = pool.starmap(transform_data,
                                         [(split_raw_data[0], results_directory, event_times, number_raw_data_files, 1),
                                          (split_raw_data[1], results_directory, event_times, number_raw_data_files, 2),
                                          (split_raw_data[2], results_directory, event_times, number_raw_data_files, 3),
