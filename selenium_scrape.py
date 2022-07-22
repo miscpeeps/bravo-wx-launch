@@ -76,9 +76,12 @@ def get_datetime(date, time):
     return start_date, start_time, launch_date, launch_time
 
 
-base_dir = 'D:/Weather/'
-launches = pd.read_csv("launches.csv")
+base_dir = '/Users/jimmy/Downloads/'
+launches = pd.read_csv("/Users/jimmy/Projects/bravo-launch/bravo-wx-launch/launches.csv")
 site_list = ["WeatherTower"]
+
+launches.sort_index(ascending=False, inplace=True)
+
 for index, row in launches.iterrows():
     start_date, start_time, launch_date, launch_time = get_datetime(row["launch date"], row["time (z)"])
     print("running...")
@@ -93,5 +96,5 @@ for index, row in launches.iterrows():
     for site in site_list:
         get_data(start_date, start_time, launch_date, launch_time, site, path)
         sleep(5)
-        for file in glob(r"C:\Users\Brad\Downloads\weather-tower*"):
+        for file in glob(r"/Users/jimmy/Downloads/weather-*"):
             shutil.move(file, path + "/" + site + ".csv")

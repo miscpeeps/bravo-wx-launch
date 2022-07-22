@@ -47,7 +47,6 @@ def weather_towers(path, launchtime):
 
 # #          # created NULL column
         groupby.drop(columns='NULL', inplace=True)
-        #display(groupby)
         groupby.interpolate(inplace=True)
         groupby.bfill(inplace=True)
         logging.debug(f'Successfully transformed data for {transform} at {launchtime} from {path}')
