@@ -260,43 +260,43 @@ def transform_data(raw_data_files: dict, results_directory: str,
             path, ext = os.path.splitext(file_name)
             # switch case based on what kind of data file
             if ext == ".csv":
-                if "Amps" or "amps" in file_name:
+                if "amps" in file_name.lower():
                     logging.debug("Applying transform to amps-low file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call amps low transform
                     df_dict["amps_df"] = amps_low_transform.lowamps(file_name, event_times[date_key])
-                elif "Field" or "field" in file_name:
+                elif "field" in file_name.lower():
                     logging.debug("Applying transform to field mill (lplws) file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call lplws field mill transform
                     df_dict["fm_df"] = field_mill_transform.field_mill(file_name, event_times[date_key])
-                elif "Merlin" or "merlin" in file_name:
+                elif "merlin" in file_name.lower():
                     logging.debug("Applying transform to merlin c-g file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call merlin c-g transform
                     df_dict["mcg_df"] = merlin_transform.cg(file_name, event_times[date_key])
-                elif "Rain" or "rain" in file_name:
+                elif "rain" in file_name.lower():
                     logging.debug("Applying transform to rainfall file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call rainfall transform
                     df_dict["rain_df"] = raingauge_transform.rainfall(file_name, event_times[date_key])
-                elif "Tower" or "tower" in file_name:
+                elif "tower" in file_name.lower():
                     logging.debug("Applying transform to weather tower file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call weather tower transform
                     df_dict["wt_df"] = weather_tower_transform.weather_towers(file_name, event_times[date_key])
-                elif "Profiler50" in file_name:
+                elif "er50" in file_name.lower():
                     logging.debug("Applying transform to 50MHz wind file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
                     # call 50Mhz wind transform
                     df_dict["50_df"] = wind_profiler_50_transform.wind_profiler_50(file_name, event_times[date_key])
-                elif "Profiler915" in file_name:
+                elif "er915" in file_name.lower():
                     logging.debug("Applying transform to 915MHz wind file")
                     df_count = pd.read_csv(file_name)
                     total_data_points += df_count.shape[0] * df_count.shape[1]
