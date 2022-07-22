@@ -409,7 +409,11 @@ if __name__ == '__main__':
     split_raw_data = split_raw_data_dict(raw_data_files)
 
     print("split data:")
-    print(split_raw_data)
+    for index, item in enumerate(split_raw_data):
+        print(index)
+        print(split_raw_data[index])
+        print("/n")
+  
     total_data_points = 0
 
     with Pool(processes=8) as pool:

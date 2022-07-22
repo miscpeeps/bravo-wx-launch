@@ -296,11 +296,6 @@ def transform_data(raw_data_files: dict, results_directory: str,
                     logging.warning("%s is not a valid csv file. Ignoring", file_name)
             else:
                 logging.warning("%s is not a valid data file. Ignoring", file_name)
-                else:
-                    logging.warning("%s is not a valid csv file. Ignoring", file_name)
-            else:
-                logging.warning("%s is not a valid data file. Ignoring", file_name)
-            
 
         # Check if dataframe joiner has all 7 expected dataframes and merge
         if len(df_dict) == 7:
