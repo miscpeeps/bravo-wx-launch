@@ -60,3 +60,12 @@ Only 4 Found in ./Scraped_Files/21050413-scrub/
 ./Data_Templates/WeatherTower.csv
 ./Data_Templates/WindProfiler915.csv
 Successfully scanned raw-data files, found 852 files
+
+
+More than 7 files at ./Scraped_Files/20150210-scrub/
+More than 7 files at ./Scraped_Files/20150314-launch/
+More than 7 files at ./Scraped_Files/20151203-scrub/
+More than 7 files at ./Scraped_Files/20151204-scrub/
+More than 7 files at ./Scraped_Files/20151205-scrub/
+More than 7 files at ./Scraped_Files/20160224-scrub/
+More than 7 files at ./Scraped_Files/20160302-scrub/
